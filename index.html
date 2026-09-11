@@ -12,35 +12,44 @@ body{
     max-width: 400px;
     margin: auto;
     padding: 20px;
-    text-align: center;
 }
 
 h1{
-    font-size: 28px;
+    text-align:center;
 }
 
 button{
-    width: 100%;
-    height: 50px;
-    font-size: 18px;
-    margin-top: 10px;
+    width:100%;
+    height:50px;
+    font-size:18px;
+    margin-top:10px;
 }
 
 input{
-    width: 100%;
-    height: 50px;
-    font-size: 18px;
-    margin-top: 10px;
-    box-sizing: border-box;
+    width:100%;
+    height:50px;
+    font-size:18px;
+    margin-top:10px;
+    box-sizing:border-box;
 }
 
 #status{
-    margin-top: 10px;
-    color: green;
+    margin-top:10px;
+    color:green;
+}
+
+#log{
+    margin-top:20px;
+    border:1px solid #ccc;
+    padding:10px;
+    height:250px;
+    overflow:auto;
+    white-space:pre-wrap;
+    font-size:14px;
 }
 </style>
-
 </head>
+
 <body>
 
 <h1>RN4020 BLE接続</h1>
@@ -49,81 +58,155 @@ input{
 
 <p id="status">未接続</p>
 
-<input id="sendText" placeholder="送信する文字">
+<input
+    id="sendText"
+    type="text"
+    placeholder="送信する文字"
+>
 
 <button onclick="sendText()">
 送信
 </button>
 
+<div id="log"></div>
+
 <script>
 
-let writeCharacteristic;
+let writeCharacteristic = null;
+
+function log(text){
+    document.getElementById("log").textContent +=
+        text + "\n";
+}
 
 async function connectBLE(){
 
     try{
 
+        document.getElementById("status").innerText =
+            "デバイス選択中...";
+
         const device =
-        await navigator.bluetooth.requestDevice({
-            acceptAllDevices: true,
-            optionalServices: [
-                "サービスUUID"
-            ]
-        });
+            await navigator.bluetooth.requestDevice({
+                acceptAllDevices: true,
+                optionalServices: [
+                    0x1800,
+                    0x1801
+                ]
+            });
+
+        log("選択: " + device.name);
 
         const server =
-        await device.gatt.connect();
+            await device.gatt.connect();
 
-        const service =
-        await server.getPrimaryService(
-            "サービスUUID"
-        );
+        log("GATT接続成功");
 
-        writeCharacteristic =
-        await service.getCharacteristic(
-            "キャラクタリスティックUUID"
-        );
+        const services =
+            await server.getPrimaryServices();
 
-        document.getElementById("status").innerText =
+        for(const service of services){
+
+            log("Service : " + service.uuid);
+
+            const chars =
+                await service.getCharacteristics();
+
+            for(const ch of chars){
+
+                log(
+                    "  Characteristic : "
+                    + ch.uuid
+                );
+
+                log(
+                    "    Read="
+                    + ch.properties.read
+                    + " Write="
+                    + ch.properties.write
+                    + " WriteNR="
+                    + ch.properties.writeWithoutResponse
+                    + " Notify="
+                    + ch.properties.notify
+                );
+
+                if(
+                    !writeCharacteristic &&
+                    (
+                        ch.properties.write ||
+                        ch.properties.writeWithoutResponse
+                    )
+                ){
+                    writeCharacteristic = ch;
+
+                    log(
+                        "★送信用Characteristic発見"
+                    );
+                }
+            }
+        }
+
+        if(writeCharacteristic){
+
+            document.getElementById("status")
+            .innerText =
             "接続成功";
+
+        }else{
+
+            document.getElementById("status")
+            .innerText =
+            "書込みCharacteristicなし";
+
+        }
 
     }catch(e){
 
-        document.getElementById("status").innerText =
-            e;
+        document.getElementById("status")
+        .innerText =
+        "エラー";
+
+        log("ERROR : " + e);
 
     }
+
 }
 
 async function sendText(){
 
-    if(!writeCharacteristic){
-        alert("先に接続してください");
-        return;
+    try{
+
+        if(!writeCharacteristic){
+
+            alert(
+                "書込みCharacteristicがありません"
+            );
+
+            return;
+        }
+
+        const text =
+            document.getElementById("sendText")
+            .value;
+
+        const encoder =
+            new TextEncoder();
+
+        await writeCharacteristic.writeValue(
+            encoder.encode(text)
+        );
+
+        log("送信: " + text);
+
+    }catch(e){
+
+        log("送信エラー: " + e);
+
     }
 
-    const text =
-        document.getElementById("sendText").value;
-
-    await writeCharacteristic.writeValue(
-        new TextEncoder().encode(text)
-    );
-
-    alert("送信しました");
 }
 
 </script>
 
 </body>
 </html>
-const services = await server.getPrimaryServices();
-
-for (const service of services) {
-  console.log("Service UUID:", service.uuid);
-
-  const chars = await service.getCharacteristics();
-
-  for (const ch of chars) {
-    console.log("  Characteristic UUID:", ch.uuid);
-  }
-}
