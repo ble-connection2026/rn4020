@@ -1,6 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RN4020 BLE</title>
+</head>
 <body>
-<h1>Hello RN4020</h1>
+
+<h1>RN4020 BLE接続</h1>
+
+<button onclick="connectBLE()">接続</button>
+
+<p id="status">未接続</p>
+
+<script>
+
+async function connectBLE() {
+
+  try {
+
+    const device =
+      await navigator.bluetooth.requestDevice({
+        acceptAllDevices: true,
+        optionalServices: []
+      });
+
+    document.getElementById("status").innerText =
+      "接続先: " + device.name;
+
+  } catch(err) {
+
+    document.getElementById("status").innerText =
+      err;
+
+  }
+}
+
+</script>
+
 </body>
 </html>
+
