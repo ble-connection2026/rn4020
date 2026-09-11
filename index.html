@@ -116,3 +116,14 @@ async function sendText(){
 
 </body>
 </html>
+const services = await server.getPrimaryServices();
+
+for (const service of services) {
+  console.log("Service UUID:", service.uuid);
+
+  const chars = await service.getCharacteristics();
+
+  for (const ch of chars) {
+    console.log("  Characteristic UUID:", ch.uuid);
+  }
+}
