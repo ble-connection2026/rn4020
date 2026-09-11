@@ -7,11 +7,12 @@
 <title>RN4020 BLE</title>
 
 <style>
+
 body{
-    font-family: sans-serif;
-    max-width: 400px;
-    margin: auto;
-    padding: 20px;
+    font-family:sans-serif;
+    max-width:420px;
+    margin:auto;
+    padding:20px;
 }
 
 h1{
@@ -20,14 +21,14 @@ h1{
 
 button{
     width:100%;
-    height:50px;
+    height:55px;
     font-size:18px;
     margin-top:10px;
 }
 
 input{
     width:100%;
-    height:50px;
+    height:55px;
     font-size:18px;
     margin-top:10px;
     box-sizing:border-box;
@@ -35,7 +36,7 @@ input{
 
 #status{
     margin-top:10px;
-    color:green;
+    font-weight:bold;
 }
 
 #log{
@@ -45,8 +46,9 @@ input{
     height:250px;
     overflow:auto;
     white-space:pre-wrap;
-    font-size:14px;
+    font-size:13px;
 }
+
 </style>
 </head>
 
@@ -54,14 +56,18 @@ input{
 
 <h1>RN4020 BLE接続</h1>
 
-<button onclick="connectBLE()">接続</button>
+<button onclick="connectBLE()">
+接続
+</button>
 
-<p id="status">未接続</p>
+<div id="status">
+未接続
+</div>
 
 <input
-    id="sendText"
-    type="text"
-    placeholder="送信する文字"
+id="sendText"
+type="text"
+placeholder="送信する文字を入力"
 >
 
 <button onclick="sendText()">
@@ -74,28 +80,35 @@ input{
 
 let writeCharacteristic = null;
 
-function log(text){
-    document.getElementById("log").textContent +=
-        text + "\n";
+function log(msg){
+
+    const area =
+        document.getElementById("log");
+
+    area.textContent += msg + "\n";
+
+    area.scrollTop =
+        area.scrollHeight;
 }
 
 async function connectBLE(){
 
     try{
 
-        document.getElementById("status").innerText =
-            "デバイス選択中...";
+        document.getElementById("status")
+        .innerText =
+        "RN4020選択中...";
 
         const device =
             await navigator.bluetooth.requestDevice({
-                acceptAllDevices: true,
-                optionalServices: [
-                    0x1800,
-                    0x1801
-                ]
+                acceptAllDevices:true
             });
 
-        log("選択: " + device.name);
+        log("デバイス: " + device.name);
+
+        document.getElementById("status")
+        .innerText =
+        "接続中...";
 
         const server =
             await device.gatt.connect();
@@ -105,9 +118,13 @@ async function connectBLE(){
         const services =
             await server.getPrimaryServices();
 
+        log("サービス数: " + services.length);
+
         for(const service of services){
 
-            log("Service : " + service.uuid);
+            log("");
+            log("Service");
+            log(service.uuid);
 
             const chars =
                 await service.getCharacteristics();
@@ -115,12 +132,12 @@ async function connectBLE(){
             for(const ch of chars){
 
                 log(
-                    "  Characteristic : "
+                    "Characteristic: "
                     + ch.uuid
                 );
 
                 log(
-                    "    Read="
+                    "Read="
                     + ch.properties.read
                     + " Write="
                     + ch.properties.write
@@ -137,13 +154,17 @@ async function connectBLE(){
                         ch.properties.writeWithoutResponse
                     )
                 ){
-                    writeCharacteristic = ch;
+
+                    writeCharacteristic =
+                        ch;
 
                     log(
                         "★送信用Characteristic発見"
                     );
                 }
+
             }
+
         }
 
         if(writeCharacteristic){
@@ -156,17 +177,17 @@ async function connectBLE(){
 
             document.getElementById("status")
             .innerText =
-            "書込みCharacteristicなし";
+            "書込み先が見つかりません";
 
         }
 
-    }catch(e){
+    }catch(error){
 
         document.getElementById("status")
         .innerText =
         "エラー";
 
-        log("ERROR : " + e);
+        log(error);
 
     }
 
@@ -179,7 +200,7 @@ async function sendText(){
         if(!writeCharacteristic){
 
             alert(
-                "書込みCharacteristicがありません"
+                "書込み可能Characteristicが見つかっていません"
             );
 
             return;
@@ -198,9 +219,10 @@ async function sendText(){
 
         log("送信: " + text);
 
-    }catch(e){
+    }catch(error){
 
-        log("送信エラー: " + e);
+        log("送信失敗");
+        log(error);
 
     }
 
