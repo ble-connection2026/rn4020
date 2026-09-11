@@ -1,5 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RN4020 BLE</title>
+</head>
 <body>
 
 <h1>RN4020 BLE接続</h1>
@@ -8,25 +13,36 @@
 
 <p id="status">未接続</p>
 
+<input id="txt" type="text" placeholder="送信文字列">
+<button onclick="sendText()">送信</button>
+
 <script>
+
+let characteristic = null;
+
+const SERVICE_UUID = "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX";
+const CHAR_UUID = "YYYYYYYY-YYYY-YYYY-YYYY-YYYYYYYYYYYY";
 
 async function connectBLE() {
 
   try {
 
-    document.getElementById("status").innerText =
-      "デバイス選択中";
-
     const device =
       await navigator.bluetooth.requestDevice({
-        acceptAllDevices: true
+        acceptAllDevices: true,
+        optionalServices: [SERVICE_UUID]
       });
 
     document.getElementById("status").innerText =
-      "選択: " + device.name;
+      "接続中...";
 
-    const server =
-      await device.gatt.connect();
+    const server = await device.gatt.connect();
+
+    const service =
+      await server.getPrimaryService(SERVICE_UUID);
+
+    characteristic =
+      await service.getCharacteristic(CHAR_UUID);
 
     document.getElementById("status").innerText =
       "接続成功";
@@ -34,10 +50,26 @@ async function connectBLE() {
   } catch(err) {
 
     document.getElementById("status").innerText =
-      "エラー: " + err;
+      err;
 
   }
+}
 
+async function sendText() {
+
+  if (!characteristic) {
+    alert("先に接続してください");
+    return;
+  }
+
+  const text =
+      document.getElementById("txt").value;
+
+  await characteristic.writeValue(
+      new TextEncoder().encode(text)
+  );
+
+  alert("送信完了");
 }
 
 </script>
