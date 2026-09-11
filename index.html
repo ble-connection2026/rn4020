@@ -28,8 +28,8 @@ h1{
 }
 
 #status{
-    text-align:center;
     margin-top:15px;
+    text-align:center;
     font-weight:bold;
 }
 
@@ -44,7 +44,7 @@ h1{
     border:2px solid #ccc;
     border-radius:10px;
     text-align:right;
-    font-size:40px;
+    font-size:42px;
     padding-right:15px;
     background:white;
 }
@@ -64,9 +64,16 @@ h1{
     background:#f0f0f0;
 }
 
-</style>
-</head>
+.confirm{
+    grid-column:1 / span 3;
+    background:#4CAF50 !important;
+    color:white;
+    font-size:28px !important;
+}
 
+</style>
+
+</head>
 <body>
 
 <h1>RN4020 タイマー</h1>
@@ -81,7 +88,9 @@ h1{
 
 <div id="keypadArea">
 
-<div id="display">0</div>
+<div id="display">
+0
+</div>
 
 <div class="keypad">
 
@@ -101,6 +110,11 @@ h1{
 <button onclick="pressKey('0')">0</button>
 <button onclick="buzzer()">🔔</button>
 
+<button class="confirm"
+onclick="sendTimer()">
+✅ 確定
+</button>
+
 </div>
 
 </div>
@@ -112,8 +126,8 @@ let inputValue = "";
 
 function updateDisplay(){
 
-    document.getElementById("display").innerText =
-        inputValue || "0";
+    document.getElementById("display")
+        .innerText = inputValue || "0";
 }
 
 async function connectBLE(){
@@ -121,23 +135,23 @@ async function connectBLE(){
     try{
 
         document.getElementById("status")
-        .innerText = "RN4020選択中...";
+            .innerText = "RN4020選択中...";
 
         const device =
-        await navigator.bluetooth.requestDevice({
-            acceptAllDevices:true
-        });
+            await navigator.bluetooth.requestDevice({
+                acceptAllDevices:true
+            });
 
         const server =
-        await device.gatt.connect();
+            await device.gatt.connect();
 
         const services =
-        await server.getPrimaryServices();
+            await server.getPrimaryServices();
 
         for(const service of services){
 
             const chars =
-            await service.getCharacteristics();
+                await service.getCharacteristics();
 
             for(const ch of chars){
 
@@ -148,44 +162,37 @@ async function connectBLE(){
                         ch.properties.writeWithoutResponse
                     )
                 ){
-
                     writeCharacteristic = ch;
-
                 }
-
             }
-
         }
 
         if(writeCharacteristic){
 
             document.getElementById("status")
-            .innerText = "接続成功";
+                .innerText = "接続成功";
 
             document.getElementById("connectBtn")
-            .style.display = "none";
+                .style.display = "none";
 
             document.getElementById("keypadArea")
-            .style.display = "block";
+                .style.display = "block";
 
         }else{
 
             document.getElementById("status")
-            .innerText =
-            "送信先が見つかりません";
+                .innerText = "送信先が見つかりません";
 
         }
 
     }catch(error){
 
         document.getElementById("status")
-        .innerText =
-        "接続失敗";
+            .innerText = "接続失敗";
 
         console.log(error);
 
     }
-
 }
 
 async function sendBLE(text){
@@ -199,19 +206,37 @@ async function sendBLE(text){
     );
 }
 
-async function pressKey(key){
+function pressKey(key){
+
+    if(inputValue.length >= 8){
+        return;
+    }
 
     inputValue += key;
 
     updateDisplay();
-
-    await sendBLE(key);
 }
 
 function deleteKey(){
 
     inputValue =
-    inputValue.slice(0,-1);
+        inputValue.slice(0,-1);
+
+    updateDisplay();
+}
+
+async function sendTimer(){
+
+    if(inputValue.length === 0){
+        alert("数字を入力してください");
+        return;
+    }
+
+    await sendBLE(inputValue);
+
+    alert("送信: " + inputValue);
+
+    inputValue = "";
 
     updateDisplay();
 }
