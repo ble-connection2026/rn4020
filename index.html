@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport"
+content="width=device-width,initial-scale=1">
 
-<title>RN4020 BLE</title>
+<title>RN4020 Timer</title>
 
 <style>
 
@@ -20,33 +22,56 @@ h1{
 }
 
 button{
-    width:100%;
-    height:55px;
-    font-size:18px;
-    margin-top:10px;
+    border:none;
+    border-radius:10px;
 }
 
-input{
+#connectBtn{
     width:100%;
     height:55px;
     font-size:18px;
-    margin-top:10px;
-    box-sizing:border-box;
 }
 
 #status{
     margin-top:10px;
+    text-align:center;
     font-weight:bold;
+}
+
+#display{
+    height:70px;
+    line-height:70px;
+    margin-top:20px;
+    border:2px solid #ccc;
+    border-radius:10px;
+    text-align:right;
+    font-size:40px;
+    padding-right:15px;
+    background:#fff;
+}
+
+.keypad{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin-top:20px;
+}
+
+.keypad button{
+    height:80px;
+    font-size:30px;
+    background:#f0f0f0;
 }
 
 #log{
     margin-top:20px;
     border:1px solid #ccc;
+    border-radius:10px;
     padding:10px;
-    height:250px;
+    height:180px;
     overflow:auto;
     white-space:pre-wrap;
-    font-size:13px;
+    font-size:12px;
 }
 
 </style>
@@ -54,9 +79,10 @@ input{
 
 <body>
 
-<h1>RN4020 BLE接続</h1>
+<h1>RN4020 タイマー</h1>
 
-<button onclick="connectBLE()">
+<button id="connectBtn"
+onclick="connectBLE()">
 接続
 </button>
 
@@ -64,31 +90,52 @@ input{
 未接続
 </div>
 
-<input
-id="sendText"
-type="text"
-placeholder="送信する文字を入力"
->
+<div id="display">
+0
+</div>
 
-<button onclick="sendText()">
-送信
-</button>
+<div class="keypad">
+
+<button onclick="pressKey('1')">1</button>
+<button onclick="pressKey('2')">2</button>
+<button onclick="pressKey('3')">3</button>
+
+<button onclick="pressKey('4')">4</button>
+<button onclick="pressKey('5')">5</button>
+<button onclick="pressKey('6')">6</button>
+
+<button onclick="pressKey('7')">7</button>
+<button onclick="pressKey('8')">8</button>
+<button onclick="pressKey('9')">9</button>
+
+<button onclick="deleteKey()">←</button>
+<button onclick="pressKey('0')">0</button>
+<button onclick="buzzer()">🔔</button>
+
+</div>
 
 <div id="log"></div>
 
 <script>
 
-let writeCharacteristic = null;
+let writeCharacteristic=null;
+let inputValue="";
 
-function log(msg){
+function log(text){
 
-    const area =
-        document.getElementById("log");
+    const area=
+    document.getElementById("log");
 
-    area.textContent += msg + "\n";
+    area.textContent+=text+"\n";
 
-    area.scrollTop =
-        area.scrollHeight;
+    area.scrollTop=
+    area.scrollHeight;
+}
+
+function updateDisplay(){
+
+    document.getElementById("display")
+    .innerText=inputValue || "0";
 }
 
 async function connectBLE(){
@@ -96,56 +143,29 @@ async function connectBLE(){
     try{
 
         document.getElementById("status")
-        .innerText =
-        "RN4020選択中...";
+        .innerText="RN4020選択中";
 
-        const device =
-            await navigator.bluetooth.requestDevice({
-                acceptAllDevices:true
-            });
+        const device=
+        await navigator.bluetooth.requestDevice({
+            acceptAllDevices:true
+        });
 
-        log("デバイス: " + device.name);
+        log("デバイス: "+device.name);
 
-        document.getElementById("status")
-        .innerText =
-        "接続中...";
+        const server=
+        await device.gatt.connect();
 
-        const server =
-            await device.gatt.connect();
+        log("接続成功");
 
-        log("GATT接続成功");
-
-        const services =
-            await server.getPrimaryServices();
-
-        log("サービス数: " + services.length);
+        const services=
+        await server.getPrimaryServices();
 
         for(const service of services){
 
-            log("");
-            log("Service");
-            log(service.uuid);
-
-            const chars =
-                await service.getCharacteristics();
+            const chars=
+            await service.getCharacteristics();
 
             for(const ch of chars){
-
-                log(
-                    "Characteristic: "
-                    + ch.uuid
-                );
-
-                log(
-                    "Read="
-                    + ch.properties.read
-                    + " Write="
-                    + ch.properties.write
-                    + " WriteNR="
-                    + ch.properties.writeWithoutResponse
-                    + " Notify="
-                    + ch.properties.notify
-                );
 
                 if(
                     !writeCharacteristic &&
@@ -155,80 +175,74 @@ async function connectBLE(){
                     )
                 ){
 
-                    writeCharacteristic =
-                        ch;
+                    writeCharacteristic=ch;
 
-                    log(
-                        "★送信用Characteristic発見"
-                    );
+                    log("送信先発見");
                 }
-
             }
-
         }
 
         if(writeCharacteristic){
 
             document.getElementById("status")
-            .innerText =
-            "接続成功";
+            .innerText="接続成功";
 
         }else{
 
             document.getElementById("status")
-            .innerText =
-            "書込み先が見つかりません";
-
+            .innerText=
+            "送信先が見つかりません";
         }
 
-    }catch(error){
+    }catch(e){
 
         document.getElementById("status")
-        .innerText =
-        "エラー";
+        .innerText="接続失敗";
 
-        log(error);
-
+        log(e);
     }
-
 }
 
-async function sendText(){
+async function sendBLE(text){
 
-    try{
+    if(!writeCharacteristic){
 
-        if(!writeCharacteristic){
+        alert("先に接続してください");
 
-            alert(
-                "書込み可能Characteristicが見つかっていません"
-            );
-
-            return;
-        }
-
-        const text =
-            document.getElementById("sendText")
-            .value;
-
-        const encoder =
-            new TextEncoder();
-
-        await writeCharacteristic.writeValue(
-            encoder.encode(text)
-        );
-
-        log("送信: " + text);
-
-    }catch(error){
-
-        log("送信失敗");
-        log(error);
-
+        return;
     }
 
+    await writeCharacteristic.writeValue(
+        new TextEncoder().encode(text)
+    );
+
+    log("送信: "+text);
+}
+
+async function pressKey(key){
+
+    inputValue+=key;
+
+    updateDisplay();
+
+    await sendBLE(key);
+}
+
+function deleteKey(){
+
+    inputValue=
+    inputValue.slice(0,-1);
+
+    updateDisplay();
+}
+
+async function buzzer(){
+
+    await sendBLE("B");
 }
 
 </script>
 
 </body>
+
 </html>
