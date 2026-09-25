@@ -184,6 +184,7 @@ button:active{
 .keypad .buzzer-button{
     color:white;
     background:#f1a000;
+    font-size:20px;
 }
 
 .confirm-button{
@@ -251,7 +252,6 @@ button:active{
         min-height:60px;
         font-size:26px;
     }
-
 }
 
 </style>
@@ -260,7 +260,7 @@ button:active{
 
 <body>
 
-<!-- 1ページ目：モード選択 -->
+<!-- 1ページ目：接続とモード選択 -->
 <section id="modePage">
 
     <h1>BLE 操作パネル</h1>
@@ -342,7 +342,7 @@ button:active{
             class="delete-button"
             onclick="deleteKey()"
         >
-            ←
+            削除
         </button>
 
         <button type="button" onclick="pressKey('0')">0</button>
@@ -392,7 +392,6 @@ button:active{
 入力した数字をまとめて送信
 */
 
-
 let bleDevice = null;
 let gattServer = null;
 let writeCharacteristic = null;
@@ -436,7 +435,7 @@ function showMessage(text, isError = false){
 }
 
 
-/* 表示更新 */
+/* 数字表示 */
 function updateDisplay(){
 
     document.getElementById("display")
@@ -444,7 +443,7 @@ function updateDisplay(){
 }
 
 
-/* RN4020接続 */
+/* RN4020へ接続 */
 async function connectBLE(){
 
     try{
@@ -452,7 +451,7 @@ async function connectBLE(){
         if(!navigator.bluetooth){
 
             throw new Error(
-                "このブラウザはWeb Bluetoothに対応していません。iPhoneではBluefyを使用してください。"
+                "Web Bluetooth非対応です。iPhoneではBluefyを使用してください。"
             );
         }
 
@@ -461,9 +460,6 @@ async function connectBLE(){
             ""
         );
 
-        /*
-        近くのBLE機器を表示
-        */
         bleDevice =
             await navigator.bluetooth.requestDevice({
                 acceptAllDevices:true
@@ -474,34 +470,19 @@ async function connectBLE(){
             ""
         );
 
-        /*
-        RN4020のGATTサーバーへ接続
-        */
         gattServer =
             await bleDevice.gatt.connect();
 
-        /*
-        接続が切れたときの処理
-        */
         bleDevice.addEventListener(
             "gattserverdisconnected",
             onDisconnected
         );
 
-        /*
-        書き込み先を初期化
-        */
         writeCharacteristic = null;
 
-        /*
-        RN4020のサービス一覧を取得
-        */
         const services =
             await gattServer.getPrimaryServices();
 
-        /*
-        各サービス内のCharacteristicを確認
-        */
         for(const service of services){
 
             const characteristics =
@@ -509,10 +490,6 @@ async function connectBLE(){
 
             for(const characteristic of characteristics){
 
-                /*
-                WriteまたはWrite Without Responseに
-                対応するCharacteristicを送信先にする
-                */
                 if(
                     characteristic.properties.write ||
                     characteristic.properties.writeWithoutResponse
@@ -543,10 +520,6 @@ async function connectBLE(){
             "connected"
         );
 
-        /*
-        接続ボタンを隠して
-        モード選択ボタンを表示
-        */
         document.getElementById("connectBtn")
             .style.display = "none";
 
@@ -595,7 +568,7 @@ function onDisconnected(){
 }
 
 
-/* BLE送信 */
+/* BLEデータ送信 */
 async function sendBLE(text){
 
     if(
@@ -609,15 +582,9 @@ async function sendBLE(text){
         );
     }
 
-    /*
-    半角英数字をUTF-8のバイト列に変換
-    */
     const data =
         new TextEncoder().encode(text);
 
-    /*
-    対応する書き込み方法を選択
-    */
     if(
         writeCharacteristic.properties
             .writeWithoutResponse &&
@@ -653,17 +620,17 @@ async function selectMode(mode){
     if(mode === "timer"){
 
         signal = "a";
-        modeTitle = "⏱ タイマー";
+        modeTitle = "タイマー";
 
     }else if(mode === "change"){
 
         signal = "b";
-        modeTitle = "🔄 選手交代";
+        modeTitle = "選手交代";
 
     }else if(mode === "score"){
 
         signal = "c";
-        modeTitle = "🏆 得点板";
+        modeTitle = "得点板";
 
     }else{
 
@@ -672,9 +639,6 @@ async function selectMode(mode){
 
     try{
 
-        /*
-        モード信号をRN4020へ送信
-        */
         await sendBLE(signal);
 
         currentMode = mode;
@@ -685,10 +649,6 @@ async function selectMode(mode){
         document.getElementById("modeName")
             .textContent = modeTitle;
 
-        /*
-        1ページ目を非表示にして
-        2ページ目を表示
-        */
         document.getElementById("modePage")
             .style.display = "none";
 
@@ -711,17 +671,16 @@ async function selectMode(mode){
 }
 
 
-/* 数字入力 */
+/* 数字を入力 */
 function pressKey(key){
 
-    /*
-    最大8桁
-    */
     if(inputValue.length >= 8){
+
         showMessage(
             "入力できるのは8桁までです",
             true
         );
+
         return;
     }
 
@@ -741,7 +700,7 @@ function deleteKey(){
 }
 
 
-/* 確定 */
+/* 入力した数字を送信 */
 async function confirmInput(){
 
     if(inputValue.length === 0){
@@ -756,21 +715,16 @@ async function confirmInput(){
 
     try{
 
-        /*
-        入力された数字を一括送信
-        例：1234
-        */
-        await sendBLE(inputValue);
+        const sentValue = inputValue;
+
+        await sendBLE(sentValue);
 
         showMessage(
             "「" +
-            inputValue +
+            sentValue +
             "」を送信しました"
         );
 
-        /*
-        送信後に表示を空にする
-        */
         inputValue = "";
 
         updateDisplay();
@@ -785,14 +739,11 @@ async function confirmInput(){
 }
 
 
-/* ブザー */
+/* ブザー信号dを送信 */
 async function sendBuzzer(){
 
     try{
 
-        /*
-        dを送信
-        */
         await sendBLE("d");
 
         showMessage(
@@ -810,7 +761,7 @@ async function sendBuzzer(){
 }
 
 
-/* モード選択へ戻る */
+/* モード選択画面へ戻る */
 function backToModePage(){
 
     inputValue = "";
