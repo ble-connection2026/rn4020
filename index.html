@@ -1,214 +1,727 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>RN4020 Timer</title>
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+>
+
+<title>BLE 操作パネル</title>
 
 <style>
 
+/* 全体 */
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html,
 body{
-    font-family:sans-serif;
-    max-width:420px;
+    margin:0;
+    min-height:100%;
+    background:#f4f6f8;
+}
+
+body{
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    max-width:430px;
     margin:auto;
-    padding:20px;
+    padding:
+        max(20px, env(safe-area-inset-top))
+        20px
+        max(20px, env(safe-area-inset-bottom));
 }
 
 h1{
+    margin:10px 0 20px;
     text-align:center;
+    font-size:28px;
 }
 
+button{
+    font-family:inherit;
+    touch-action:manipulation;
+    cursor:pointer;
+}
+
+button:active{
+    transform:scale(0.97);
+}
+
+
+/* 接続状態 */
+#status{
+    margin:12px 0 20px;
+    padding:12px;
+    border-radius:10px;
+    text-align:center;
+    font-weight:bold;
+    color:#555;
+    background:#e9ecef;
+}
+
+#status.connected{
+    color:#126b2e;
+    background:#dff5e5;
+}
+
+#status.error{
+    color:#a50000;
+    background:#ffe1e1;
+}
+
+
+/* 接続ボタン */
 #connectBtn{
     width:100%;
-    height:60px;
-    font-size:20px;
+    min-height:60px;
     border:none;
-    border-radius:10px;
+    border-radius:14px;
+    color:white;
+    background:#1677ff;
+    font-size:20px;
+    font-weight:bold;
 }
 
-#status{
+
+/* モード選択画面 */
+#modePage{
+    display:block;
+}
+
+#modeButtons{
+    display:none;
+}
+
+.mode-title{
+    margin:25px 0 15px;
+    text-align:center;
+    font-size:21px;
+}
+
+.mode-button{
+    width:100%;
+    min-height:78px;
+    margin-bottom:14px;
+    border:none;
+    border-radius:16px;
+    color:white;
+    font-size:23px;
+    font-weight:bold;
+}
+
+.timer-button{
+    background:#1677ff;
+}
+
+.change-button{
+    background:#ff8a00;
+}
+
+.score-button{
+    background:#7b48c8;
+}
+
+
+/* テンキー画面 */
+#keypadPage{
+    display:none;
+}
+
+#modeName{
+    margin-bottom:5px;
+    text-align:center;
+    font-size:27px;
+}
+
+#display{
+    width:100%;
+    min-height:88px;
+    margin:20px 0;
+    padding:15px 18px;
+    overflow:hidden;
+    border:2px solid #cfd5dc;
+    border-radius:15px;
+    color:#111;
+    background:white;
+    text-align:right;
+    font-size:44px;
+    line-height:56px;
+    white-space:nowrap;
+}
+
+.keypad{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:11px;
+}
+
+.keypad button{
+    min-height:78px;
+    border:none;
+    border-radius:14px;
+    color:#111;
+    background:white;
+    box-shadow:0 2px 7px rgba(0,0,0,0.08);
+    font-size:31px;
+    font-weight:bold;
+}
+
+.keypad .delete-button{
+    color:white;
+    background:#e24b4b;
+}
+
+.keypad .buzzer-button{
+    color:white;
+    background:#f1a000;
+}
+
+.confirm-button{
+    grid-column:1 / span 3;
+    color:white !important;
+    background:#30a64a !important;
+    font-size:25px !important;
+}
+
+.back-button{
+    width:100%;
+    min-height:55px;
+    margin-top:18px;
+    border:2px solid #777;
+    border-radius:13px;
+    color:#444;
+    background:transparent;
+    font-size:18px;
+    font-weight:bold;
+}
+
+
+/* 送信メッセージ */
+#message{
+    min-height:25px;
     margin-top:15px;
     text-align:center;
     font-weight:bold;
 }
 
-#keypadArea{
-    display:none;
+.message-success{
+    color:#168534;
 }
 
-#display{
-    height:80px;
-    line-height:80px;
-    margin-top:20px;
-    border:2px solid #ccc;
-    border-radius:10px;
-    text-align:right;
-    font-size:42px;
-    padding-right:15px;
-    background:white;
+.message-error{
+    color:#c00000;
 }
 
-.keypad{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:10px;
-    margin-top:20px;
-}
 
-.keypad button{
-    height:80px;
-    font-size:32px;
-    border:none;
-    border-radius:10px;
-    background:#f0f0f0;
-}
+/* 画面が小さい場合 */
+@media(max-height:700px){
 
-.confirm{
-    grid-column:1 / span 3;
-    background:#4CAF50 !important;
-    color:white;
-    font-size:28px !important;
+    body{
+        padding-top:10px;
+    }
+
+    h1{
+        margin:5px 0 10px;
+        font-size:24px;
+    }
+
+    #display{
+        min-height:65px;
+        margin:10px 0;
+        padding:8px 15px;
+        font-size:36px;
+        line-height:45px;
+    }
+
+    .keypad{
+        gap:8px;
+    }
+
+    .keypad button{
+        min-height:60px;
+        font-size:26px;
+    }
+
 }
 
 </style>
-
 </head>
+
+
 <body>
 
-<h1>RN4020 タイマー</h1>
+<!-- 1ページ目：モード選択 -->
+<section id="modePage">
 
-<button id="connectBtn" onclick="connectBLE()">
-接続
-</button>
+    <h1>BLE 操作パネル</h1>
 
-<div id="status">
-未接続
-</div>
+    <button
+        id="connectBtn"
+        type="button"
+        onclick="connectBLE()"
+    >
+        RN4020に接続
+    </button>
 
-<div id="keypadArea">
+    <div id="status">
+        未接続
+    </div>
 
-<div id="display">
-0
-</div>
+    <div id="modeButtons">
 
-<div class="keypad">
+        <div class="mode-title">
+            使用するモードを選択
+        </div>
 
-<button onclick="pressKey('1')">1</button>
-<button onclick="pressKey('2')">2</button>
-<button onclick="pressKey('3')">3</button>
+        <button
+            type="button"
+            class="mode-button timer-button"
+            onclick="selectMode('timer')"
+        >
+            ⏱ タイマー
+        </button>
 
-<button onclick="pressKey('4')">4</button>
-<button onclick="pressKey('5')">5</button>
-<button onclick="pressKey('6')">6</button>
+        <button
+            type="button"
+            class="mode-button change-button"
+            onclick="selectMode('change')"
+        >
+            🔄 選手交代
+        </button>
 
-<button onclick="pressKey('7')">7</button>
-<button onclick="pressKey('8')">8</button>
-<button onclick="pressKey('9')">9</button>
+        <button
+            type="button"
+            class="mode-button score-button"
+            onclick="selectMode('score')"
+        >
+            🏆 得点板
+        </button>
 
-<button onclick="deleteKey()">←</button>
-<button onclick="pressKey('0')">0</button>
-<button onclick="buzzer()">🔔</button>
+    </div>
 
-<button class="confirm"
-onclick="sendTimer()">
-✅ 確定
-</button>
+</section>
 
-</div>
 
-</div>
+<!-- 2ページ目：テンキー -->
+<section id="keypadPage">
+
+    <h1 id="modeName">
+        操作画面
+    </h1>
+
+    <div id="display">
+        0
+    </div>
+
+    <div class="keypad">
+
+        <button type="button" onclick="pressKey('1')">1</button>
+        <button type="button" onclick="pressKey('2')">2</button>
+        <button type="button" onclick="pressKey('3')">3</button>
+
+        <button type="button" onclick="pressKey('4')">4</button>
+        <button type="button" onclick="pressKey('5')">5</button>
+        <button type="button" onclick="pressKey('6')">6</button>
+
+        <button type="button" onclick="pressKey('7')">7</button>
+        <button type="button" onclick="pressKey('8')">8</button>
+        <button type="button" onclick="pressKey('9')">9</button>
+
+        <button
+            type="button"
+            class="delete-button"
+            onclick="deleteKey()"
+        >
+            ←
+        </button>
+
+        <button type="button" onclick="pressKey('0')">0</button>
+
+        <button
+            type="button"
+            class="buzzer-button"
+            onclick="sendBuzzer()"
+        >
+            🔔
+        </button>
+
+        <button
+            type="button"
+            class="confirm-button"
+            onclick="confirmInput()"
+        >
+            ✅ 確定
+        </button>
+
+    </div>
+
+    <div id="message"></div>
+
+    <button
+        type="button"
+        class="back-button"
+        onclick="backToModePage()"
+    >
+        モード選択へ戻る
+    </button>
+
+</section>
+
 
 <script>
 
-let writeCharacteristic = null;
-let inputValue = "";
+/*
+送信信号
 
+タイマー   : a
+選手交代   : b
+得点板     : c
+ブザー     : d
+
+確定ボタン:
+入力した数字をまとめて送信
+*/
+
+
+let bleDevice = null;
+let gattServer = null;
+let writeCharacteristic = null;
+
+let inputValue = "";
+let currentMode = "";
+
+
+/* 状態表示 */
+function setStatus(text, type = ""){
+
+    const status =
+        document.getElementById("status");
+
+    status.textContent = text;
+    status.className = type;
+}
+
+
+/* メッセージ表示 */
+function showMessage(text, isError = false){
+
+    const message =
+        document.getElementById("message");
+
+    message.textContent = text;
+
+    message.className =
+        isError
+        ? "message-error"
+        : "message-success";
+
+    clearTimeout(showMessage.timer);
+
+    showMessage.timer = setTimeout(() => {
+
+        message.textContent = "";
+        message.className = "";
+
+    }, 2500);
+}
+
+
+/* 表示更新 */
 function updateDisplay(){
 
     document.getElementById("display")
-        .innerText = inputValue || "0";
+        .textContent = inputValue || "0";
 }
 
+
+/* RN4020接続 */
 async function connectBLE(){
 
     try{
 
-        document.getElementById("status")
-            .innerText = "RN4020選択中...";
+        if(!navigator.bluetooth){
 
-        const device =
+            throw new Error(
+                "このブラウザはWeb Bluetoothに対応していません。iPhoneではBluefyを使用してください。"
+            );
+        }
+
+        setStatus(
+            "RN4020を選択してください",
+            ""
+        );
+
+        /*
+        近くのBLE機器を表示
+        */
+        bleDevice =
             await navigator.bluetooth.requestDevice({
                 acceptAllDevices:true
             });
 
-        const server =
-            await device.gatt.connect();
+        setStatus(
+            "接続中...",
+            ""
+        );
 
+        /*
+        RN4020のGATTサーバーへ接続
+        */
+        gattServer =
+            await bleDevice.gatt.connect();
+
+        /*
+        接続が切れたときの処理
+        */
+        bleDevice.addEventListener(
+            "gattserverdisconnected",
+            onDisconnected
+        );
+
+        /*
+        書き込み先を初期化
+        */
+        writeCharacteristic = null;
+
+        /*
+        RN4020のサービス一覧を取得
+        */
         const services =
-            await server.getPrimaryServices();
+            await gattServer.getPrimaryServices();
 
+        /*
+        各サービス内のCharacteristicを確認
+        */
         for(const service of services){
 
-            const chars =
+            const characteristics =
                 await service.getCharacteristics();
 
-            for(const ch of chars){
+            for(const characteristic of characteristics){
 
+                /*
+                WriteまたはWrite Without Responseに
+                対応するCharacteristicを送信先にする
+                */
                 if(
-                    !writeCharacteristic &&
-                    (
-                        ch.properties.write ||
-                        ch.properties.writeWithoutResponse
-                    )
+                    characteristic.properties.write ||
+                    characteristic.properties.writeWithoutResponse
                 ){
-                    writeCharacteristic = ch;
+
+                    writeCharacteristic =
+                        characteristic;
+
+                    break;
                 }
+            }
+
+            if(writeCharacteristic){
+                break;
             }
         }
 
-        if(writeCharacteristic){
+        if(!writeCharacteristic){
 
-            document.getElementById("status")
-                .innerText = "接続成功";
-
-            document.getElementById("connectBtn")
-                .style.display = "none";
-
-            document.getElementById("keypadArea")
-                .style.display = "block";
-
-        }else{
-
-            document.getElementById("status")
-                .innerText = "送信先が見つかりません";
-
+            throw new Error(
+                "書き込み可能な送信先が見つかりません"
+            );
         }
+
+        setStatus(
+            "接続成功：" +
+            (bleDevice.name || "RN4020"),
+            "connected"
+        );
+
+        /*
+        接続ボタンを隠して
+        モード選択ボタンを表示
+        */
+        document.getElementById("connectBtn")
+            .style.display = "none";
+
+        document.getElementById("modeButtons")
+            .style.display = "block";
 
     }catch(error){
 
-        document.getElementById("status")
-            .innerText = "接続失敗";
+        console.error(error);
 
-        console.log(error);
-
+        setStatus(
+            "接続失敗：" + error.message,
+            "error"
+        );
     }
 }
 
-async function sendBLE(text){
 
-    if(!writeCharacteristic){
-        return;
-    }
+/* 接続が切れたとき */
+function onDisconnected(){
 
-    await writeCharacteristic.writeValue(
-        new TextEncoder().encode(text)
+    writeCharacteristic = null;
+    gattServer = null;
+
+    inputValue = "";
+    currentMode = "";
+
+    updateDisplay();
+
+    document.getElementById("keypadPage")
+        .style.display = "none";
+
+    document.getElementById("modePage")
+        .style.display = "block";
+
+    document.getElementById("modeButtons")
+        .style.display = "none";
+
+    document.getElementById("connectBtn")
+        .style.display = "block";
+
+    setStatus(
+        "接続が切れました。もう一度接続してください。",
+        "error"
     );
 }
 
+
+/* BLE送信 */
+async function sendBLE(text){
+
+    if(
+        !writeCharacteristic ||
+        !bleDevice ||
+        !bleDevice.gatt.connected
+    ){
+
+        throw new Error(
+            "RN4020が接続されていません"
+        );
+    }
+
+    /*
+    半角英数字をUTF-8のバイト列に変換
+    */
+    const data =
+        new TextEncoder().encode(text);
+
+    /*
+    対応する書き込み方法を選択
+    */
+    if(
+        writeCharacteristic.properties
+            .writeWithoutResponse &&
+        typeof writeCharacteristic
+            .writeValueWithoutResponse === "function"
+    ){
+
+        await writeCharacteristic
+            .writeValueWithoutResponse(data);
+
+    }else if(
+        typeof writeCharacteristic
+            .writeValueWithResponse === "function"
+    ){
+
+        await writeCharacteristic
+            .writeValueWithResponse(data);
+
+    }else{
+
+        await writeCharacteristic
+            .writeValue(data);
+    }
+}
+
+
+/* モード選択 */
+async function selectMode(mode){
+
+    let signal = "";
+    let modeTitle = "";
+
+    if(mode === "timer"){
+
+        signal = "a";
+        modeTitle = "⏱ タイマー";
+
+    }else if(mode === "change"){
+
+        signal = "b";
+        modeTitle = "🔄 選手交代";
+
+    }else if(mode === "score"){
+
+        signal = "c";
+        modeTitle = "🏆 得点板";
+
+    }else{
+
+        return;
+    }
+
+    try{
+
+        /*
+        モード信号をRN4020へ送信
+        */
+        await sendBLE(signal);
+
+        currentMode = mode;
+        inputValue = "";
+
+        updateDisplay();
+
+        document.getElementById("modeName")
+            .textContent = modeTitle;
+
+        /*
+        1ページ目を非表示にして
+        2ページ目を表示
+        */
+        document.getElementById("modePage")
+            .style.display = "none";
+
+        document.getElementById("keypadPage")
+            .style.display = "block";
+
+        showMessage(
+            "モード信号「" +
+            signal +
+            "」を送信しました"
+        );
+
+    }catch(error){
+
+        alert(
+            "モード信号を送信できませんでした。\n" +
+            error.message
+        );
+    }
+}
+
+
+/* 数字入力 */
 function pressKey(key){
 
+    /*
+    最大8桁
+    */
     if(inputValue.length >= 8){
+        showMessage(
+            "入力できるのは8桁までです",
+            true
+        );
         return;
     }
 
@@ -217,33 +730,99 @@ function pressKey(key){
     updateDisplay();
 }
 
+
+/* 1文字削除 */
 function deleteKey(){
 
     inputValue =
-        inputValue.slice(0,-1);
+        inputValue.slice(0, -1);
 
     updateDisplay();
 }
 
-async function sendTimer(){
+
+/* 確定 */
+async function confirmInput(){
 
     if(inputValue.length === 0){
-        alert("数字を入力してください");
+
+        showMessage(
+            "数字を入力してください",
+            true
+        );
+
         return;
     }
 
-    await sendBLE(inputValue);
+    try{
 
-    alert("送信: " + inputValue);
+        /*
+        入力された数字を一括送信
+        例：1234
+        */
+        await sendBLE(inputValue);
 
-    inputValue = "";
+        showMessage(
+            "「" +
+            inputValue +
+            "」を送信しました"
+        );
 
-    updateDisplay();
+        /*
+        送信後に表示を空にする
+        */
+        inputValue = "";
+
+        updateDisplay();
+
+    }catch(error){
+
+        showMessage(
+            "送信失敗：" + error.message,
+            true
+        );
+    }
 }
 
-async function buzzer(){
 
-    await sendBLE("B");
+/* ブザー */
+async function sendBuzzer(){
+
+    try{
+
+        /*
+        dを送信
+        */
+        await sendBLE("d");
+
+        showMessage(
+            "ブザー信号「d」を送信しました"
+        );
+
+    }catch(error){
+
+        showMessage(
+            "ブザー信号の送信失敗：" +
+            error.message,
+            true
+        );
+    }
+}
+
+
+/* モード選択へ戻る */
+function backToModePage(){
+
+    inputValue = "";
+    currentMode = "";
+
+    updateDisplay();
+
+    document.getElementById("keypadPage")
+        .style.display = "none";
+
+    document.getElementById("modePage")
+        .style.display = "block";
 }
 
 </script>
