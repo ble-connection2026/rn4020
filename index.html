@@ -2,12 +2,12 @@
 <html lang="ja">
 
 <head>
-<meta charset="UTF-8"> /*文字化けさせない*/
+<meta charset="UTF-8"> 
 
 <meta
     name="viewport"
     content="width=device-width, initial-scale=1, viewport-fit=cover"
->　　　　　　　　　　　　　　　　　　　/*スマホの画面幅調整*/
+>　　　　　　　　　　　　　　　　　　　
 <title>BLE 接続画面</title>
 
 <style>
@@ -32,7 +32,7 @@ body{
         "Segoe UI",
         sans-serif;
 
-    max-width:430px;　/*画面最大サイズ*/
+    max-width:430px;　
     margin:auto;
     padding:
         max(20px, env(safe-area-inset-top))
@@ -309,10 +309,34 @@ button:active{
         <button
             type="button"
             class="mode-button led-color-button"
-            onclick="openLadPageFromMode('color)"
+            onclick="openLadPageFromMode('color')"
             >
                 カラー選択
+　　　　　　　</button>
 
+		<button
+            type="button"
+            class="mode-button led-clock-button"
+            onclick="openLabPageFromMode ('clock')"
+            >
+            	時計
+           </button>
+        
+        <button
+            type="button"
+            class="mode-button led-stopwatch-button"
+            onclick="openLabPageFromMode ('stopwatch')"
+            >
+            	ストップウォッチ
+            </button>
+            
+        <button
+            type="button"
+            class="mode-button lad-temp-button"
+            onclick="openLabPageFromMode ('temp')"
+            >
+            	温度
+            </button>     
        
 
     </div>
@@ -378,13 +402,7 @@ button:active{
     <!--３ページ目--!>
     
 
-    <button
-        type="button"
-        class="back-button"
-        onclick="backToModePage()"
-    >
-        モード選択へ戻る
-    </button>
+  
 
 </section>
 
