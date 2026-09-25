@@ -2,14 +2,13 @@
 <html lang="ja">
 
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8"> /*文字化けさせない*/
 
 <meta
     name="viewport"
     content="width=device-width, initial-scale=1, viewport-fit=cover"
->
-
-<title>BLE 操作パネル</title>
+>　　　　　　　　　　　　　　　　　　　/*スマホの画面幅調整*/
+<title>BLE 接続画面</title>
 
 <style>
 
@@ -17,7 +16,7 @@
 *{
     box-sizing:border-box;
     -webkit-tap-highlight-color:transparent;
-}
+}　　
 
 html,
 body{
@@ -33,7 +32,7 @@ body{
         "Segoe UI",
         sans-serif;
 
-    max-width:430px;
+    max-width:430px;　/*画面最大サイズ*/
     margin:auto;
     padding:
         max(20px, env(safe-area-inset-top))
@@ -307,6 +306,15 @@ button:active{
             得点板
         </button>
 
+        <button
+            type="button"
+            class="mode-button led-color-button"
+            onclick="openLadPageFromMode('color)"
+            >
+                カラー選択
+
+       
+
     </div>
 
 </section>
@@ -367,6 +375,9 @@ button:active{
 
     <div id="message"></div>
 
+    <!--３ページ目--!>
+    
+
     <button
         type="button"
         class="back-button"
@@ -387,6 +398,7 @@ button:active{
 選手交代   : b
 得点板     : c
 ブザー     : d
+
 
 確定ボタン:
 入力した数字をまとめて送信
