@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html lang="ja">
+DOCTYPE html>
+<<!html lang="ja">
 
 <head>
 <meta charset="UTF-8"> 
@@ -299,6 +299,77 @@ button:active{
     font-size:22px;
     font-weight:bold;
 }
+	/* 時計関係の画面 */
+#clockPage,
+#stopwatchPage,
+#timerPage{
+    display:none;
+}
+
+
+/* 時計モードに戻すボタン */
+.clock-mode-button{
+    width:100%;
+    min-height:70px;
+    margin-bottom:14px;
+    border:none;
+    border-radius:16px;
+    color:white;
+    background:#1677ff;
+    font-size:22px;
+    font-weight:bold;
+}
+
+
+/* スタート・ストップ */
+.start-stop-button{
+    width:10*%;
+    min-height:85px;
+    margin*top:15px;
+    margin-bottom:15px;
+*   border:none;
+   *border*radius*16px*
+    color:white;
+    background:#30a64a;
+    font-size:25px;
+    font-weight:bold;
+}
+
+.start-stop-button.stopping{
+    background:#e24b4b;
+}
+
+
+/* リセット */
+.reset-button{
+    width:1*0%;
+    min-height:70px;
+    margi*-bottom:15px;
+    border:none;
+   *border-radius:16px;
+    color:whit*;
+    background:#777;
+    font-size:22px;
+    font-weight:bold;
+}
+
+
+/* タイマーの数字表示 */
+#timerDisplay{
+    width:100%;
+ *  min-height:88px;
+    margin:20px*0;
+    padding:15px 18px;
+    over*low:hidden;
+    border:2px solid #*fd5dc;
+    border-radius:15px;
+   *color:#111;
+    background:white;
+*   text-align:right;
+    font-size*44px;
+    line-height:56px;
+    wh*te-space:nowrap;
+}
 </style>
 </head>
 
@@ -341,7 +412,7 @@ button:active{
         class="mode-button sensor-main-button"
         onclick="openSubPage('sensor')"
     >
-        環境表示
+        環境センサ
     </button>
 
     <button
@@ -437,7 +508,7 @@ button:active{
 			メインメニューに戻る
 		</button>
 		
-    <!--３ページ目-->
+    <!--３ページ目:時計選択-->
 	<section id="clockPage">
 
 		<h1> 
@@ -481,6 +552,7 @@ button:active{
 			>
 			スタート
 			</button>
+		
 		<button
 			type = "button"
 			class = "reset-button"
@@ -496,6 +568,7 @@ button:active{
 			>
 			前の画面に戻る
 			</button>
+		
 		<button
 			type = "button"
 			class = "back-button main-menu-button"
@@ -506,9 +579,124 @@ button:active{
 
 		<!--５ページ目：タイマー操作-->
 		<section id = " timerpage  ">
+			<h1>
+				タイマー
+			</h1>
+			<div id = "timerDisplay">
+				0
+			</div>	
 
+			<div class = "kyepad">
+				<button type = "button" onclick = "pressTimerKey('1')">1</button>
+				<button type = "button" onclick = "pressTimerKey('2')">2</button>
+				<button type = "button" onclick = "pressTimerKey('3')">3</button>
+				
+				<button type = "button" onclick = "pressTimerKey('4')">4</button>	
+				<button type = "button" onclick = "pressTimerKey('5')">5</button>
+				<button type = "button" onclick = "pressTimerKey('6')">6</button>
+				
+			    <button type = "button" onclick = "pressTimerKey('7')">7</button>
+			    <button type = "button" onclick = "pressTimerKey('8')">8</button>
+			    <button type = "button" onclick = "pressTimerKey('9')">9</button>
+				
+				
+
+				<button 
+					type = "button"
+					class = "delete-button"
+					onclick = "deleteTimerKye()"
+					>
+						削除
+					</button>
+
+				<button type = "button" onclick = "pressTimerKey('0')">
+					0
+				</button>
+
+				<button
+					type = "button"
+					class = "confirm-button"
+					onclick = "sendTimerValue()"
+					>
+					  時間設定
+					</button>
+			</div>
+
+				<button
+					type = "button"
+					class = "reset-button"
+					onclick = "resetTimer()"
+					>
+					リセットボタン
+					</button>
+
+				<button
+					type = "button"
+					class = "back-button"
+					onclick = "backToClockPageFromTimer()"
+					>
+					前の画面に戻る
+					</button>
+
+				<button
+					type= "button"
+					class="back-button main-menu-button"
+					onclick = "backToMainMenuFromTimer()"
+					>
+					メインメニューへ戻る
+					</button>
 			
-			
+
+			<!--６ページ目:環境センサ-->
+			<section id = "sensorPage">
+				<h1>
+					環境センサ
+				</h1>
+
+				<div class = "mode-title">
+					表示する項目を選んでください
+				</div>
+
+				<button
+					type = "button"
+					class = "mode-button temperature-button"
+					onclick = "selectSensorMode('temperature')"
+					>
+					温度
+					</button>
+
+				<button
+					type = "button"
+				　　class = "mode-button humidity-button"
+					onclick = "selectSensorMode('humidity')"
+					>
+					湿度
+					</button>
+
+				<button
+					type = "button"
+					class = "mode-button pressure-button"
+					onclick = "selectSensorMode('pressure')"
+					>
+					気圧
+					</button>
+
+				<button
+					type = "button"
+					class = "mode-button altitude-button"
+					onclick = "selectSensorMode('altitude')"
+					>
+					高度
+					</button>
+
+				<button
+					type = "button"
+					class = "back-button main-menu-button"
+				    onclick="backToMainMenuFromSensor()"
+
+				
+	
+
 
 </section>
 
@@ -1089,6 +1277,43 @@ function backToMainMenu(){
 
     document.getElementById("modePage")
         .style.display = "block";
+}
+		/* 時計関係のモードを選択 */
+async function selectClockMode(mode){
+
+    try{
+
+        if(mode === "stopwatch"){
+
+            await sendBLE("B");
+
+            document.getElementById("clockPage")
+                .style.display = "none";
+
+            document.getElementById("stopwatchPage")
+                .style.display = "block";
+
+        }else if(mode === "timer"){
+
+            await sendBLE("C");
+
+            timerInputValue = "";
+            updateTimerDisplay();
+
+            document.getElementById("clockPage")
+                .style.display = "none";
+
+            document.getElementById("timerPage")
+                .style.display = "block";
+        }
+
+    }catch(error){
+
+        alert(
+            "モード信号を送信できませんでした。\n" +
+            error.message
+        );
+    }
 }
 </script>
 
