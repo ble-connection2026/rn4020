@@ -118,10 +118,6 @@ button:active{
     font-weight:bold;
 }
 
-.timer-button{
-    background:#1677ff;
-}
-
 .change-button{
     background:#ff8a00;
 }
@@ -253,6 +249,56 @@ button:active{
     }
 }
 
+
+	/* 時計モード選択画面 */
+#clockPage{
+    display:none;
+}
+
+.clock-button{
+    background:#1677ff;
+}
+
+.stopwatch-button{
+    background:#ff8a00;
+}
+
+.timer-button{
+    background:#7b48c8;
+}
+
+	/* ストップウォッチ操作画面 */
+#stopwatchPage{
+    display:none;
+}
+
+.start-stop-button{
+    width:100%;
+    min-height:85px;
+    margin-bottom:15px;
+    border:none;
+    border-radius:16px;
+    color:white;
+    background:#30a64a;
+    font-size:25px;
+    font-weight:bold;
+}
+
+.start-stop-button.stopping{
+    background:#e24b4b;
+}
+
+.reset-button{
+    width:100%;
+    min-height:70px;
+    margin-bottom:15px;
+    border:none;
+    border-radius:16px;
+    color:white;
+    background:#777;
+    font-size:22px;
+    font-weight:bold;
+}
 </style>
 </head>
 
@@ -276,70 +322,45 @@ button:active{
         未接続
     </div>
 
-    <div id="modeButtons">
+<div id="modeButtons">
 
-        <div class="mode-title">
-            使用するモードを選択
-        </div>
-
-        <button
-            type="button"
-            class="mode-button timer-button"
-            onclick="selectMode('timer')"
-        >
-            タイマー
-        </button>
-
-        <button
-            type="button"
-            class="mode-button change-button"
-            onclick="selectMode('change')"
-        >
-            選手交代
-        </button>
-
-        <button
-            type="button"
-            class="mode-button score-button"
-            onclick="selectMode('score')"
-        >
-            得点板
-        </button>
-
-        <button
-            type="button"
-            class="mode-button led-color-button"
-            onclick="openLadPageFromMode('color')"
-            >
-                カラー選択
-　　　　　　　</button>
-
-		<button
-            type="button"
-            class="mode-button led-clock-button"
-            onclick="openLabPageFromMode ('clock')"
-            >
-            	時計
-           </button>
-        
-        <button
-            type="button"
-            class="mode-button led-stopwatch-button"
-            onclick="openLabPageFromMode ('stopwatch')"
-            >
-            	ストップウォッチ
-            </button>
-            
-        <button
-            type="button"
-            class="mode-button lad-temp-button"
-            onclick="openLabPageFromMode ('temp')"
-            >
-            	温度
-            </button>     
-       
-
+    <div class="mode-title">
+        メインモードを選択
     </div>
+
+    <button
+        type="button"
+        class="mode-button clock-main-button"
+        onclick="openSubPage('clock')"
+    >
+        時計
+    </button>
+
+    <button
+        type="button"
+        class="mode-button sensor-main-button"
+        onclick="openSubPage('sensor')"
+    >
+        環境表示
+    </button>
+
+    <button
+        type="button"
+        class="mode-button sports-main-button"
+        onclick="openSubPage('sports')"
+    >
+        スポーツ
+    </button>
+
+    <button
+        type="button"
+        class="mode-button setting-main-button"
+        onclick="openSubPage('setting')"
+    >
+        設定
+    </button>
+
+</div>
 
 </section>
 
@@ -378,7 +399,7 @@ button:active{
         </button>
 
         <button type="button" onclick="pressKey('0')">0</button>
-
+			0
         <button
             type="button"
             class="buzzer-button"
@@ -397,12 +418,97 @@ button:active{
 
     </div>
 
+	
     <div id="message"></div>
 
-    <!--３ページ目--!>
-    
+	<button
+		type = "button"
+		class = "back-button"
+		onclick = "backFormKeypad()"
+		>
+			前のページに戻る
+		</button>
 
-  
+	<button
+		type = "button"
+		class = "back-button main-menu-button"
+		onclick = "backToMainMenu()"
+		>
+			メインメニューに戻る
+		</button>
+		
+    <!--３ページ目-->
+	<section id="clockPage">
+
+		<h1> 
+			時計モード	
+		</h1>
+
+		<div class="mode-title">
+			モードを選んでください
+	</div>
+
+		
+	<button 
+		type = "button"
+		class = "mode-button clock-button"
+		onclick = "selectClockMode('stopwatch')"
+		>
+		  ストップウォッチ
+		</button>
+
+	<button 
+		type = "button"
+		class = "mode-button clock-button"
+		onclick = "selectClockMode('timer')"
+		>
+		  タイマー
+		</button>
+
+		
+	<!--4ページ目:ストップウォッチ操作-->
+	<section id  = "stopwatchPage">
+
+			<h1>
+				ストップウォッチ
+			</h1>
+
+		<button
+			id = "startStopBtn"
+			type = "button"
+			class = "start-stop-button"
+			onclick = "toggleStopwatch()"
+			>
+			スタート
+			</button>
+		<button
+			type = "button"
+			class = "reset-button"
+			oncklik = "resetStopWatch()"
+			>
+			　リセット
+			</button>
+
+		<button
+			type = "button"
+			class = "back-button"
+			onclick = "backToclockPage()"
+			>
+			前の画面に戻る
+			</button>
+		<button
+			type = "button"
+			class = "back-button main-menu-button"
+			onclick = "backToMainMenuFromStopwatch()"
+			>
+			メインメニューへ戻る
+			</button>
+
+		<!--５ページ目：タイマー操作-->
+		<section id = " timerpage  ">
+
+			
+			
 
 </section>
 
@@ -805,7 +911,185 @@ function backToModePage(){
     document.getElementById("modePage")
         .style.display = "block";
 }
+function backToModePage(){
 
+    inputValue = "";
+    currentMode = "";
+
+    updateDisplay();
+
+    document.getElementById("keypadPage")
+        .style.display = "none";
+
+    document.getElementById("modePage")
+        .style.display = "block";
+}
+
+
+
+    let signal = "";
+    let modeTitle = "";
+
+    if(mode === "color"){
+
+        signal = "e";
+        modeTitle = "カラー選択";
+
+    }else if(mode === "clock"){
+
+        signal = "f";
+        modeTitle = "時計";
+
+    }else if(mode === "stopwatch"){
+
+        signal = "g";
+        modeTitle = "ストップウォッチ";
+
+    }else if(mode === "temp"){
+
+        signal = "h";
+        modeTitle = "温度";
+
+    }else{
+
+        return;
+    }
+
+    try{
+
+        await sendBLE(signal);
+
+        showMessage(
+            modeTitle + "の信号「" +
+            signal + "」を送信しました"
+        );
+
+    }catch(error){
+
+        alert(
+            modeTitle +
+            "の信号を送信できませんでした。\n" +
+            error.message
+        );
+    }
+
+/* テンキーを開く */
+function openKeypad(mode, modeTitle){
+
+    currentMode = mode;
+    inputValue = "";
+
+    updateDisplay();
+
+    document.getElementById("modeName")
+        .textContent = modeTitle;
+
+    document.getElementById("modePage")
+        .style.display = "none";
+
+    document.getElementById("sportsPage")
+        .style.display = "none";
+
+    document.getElementById("clockPage")
+        .style.display = "none";
+
+    document.getElementById("keypadPage")
+        .style.display = "block";
+}
+
+/* ストップウォッチが動作中か */
+let stopwatchRunning = false;
+
+
+/* スタート・ストップを切り替える */
+async function toggleStopwatch(){
+
+    try{
+
+        await sendBLE("S");
+
+        stopwatchRunning = !stopwatchRunning;
+
+        const button =
+            document.getElementById("startStopBtn");
+
+        if(stopwatchRunning){
+
+            button.textContent = "ストップ";
+            button.classList.add("stopping");
+
+        }else{
+
+            button.textContent = "スタート";
+            button.classList.remove("stopping");
+        }
+
+    }catch(error){
+
+        alert(
+            "スタート・ストップ信号を送信できませんでした。\n" +
+            error.message
+        );
+    }
+}
+
+
+/* ストップウォッチをリセット */
+async function resetStopwatch(){
+
+    try{
+
+        await sendBLE("R");
+
+        stopwatchRunning = false;
+
+        const button =
+            document.getElementById("startStopBtn");
+
+        button.textContent = "スタート";
+        button.classList.remove("stopping");
+
+    }catch(error){
+
+        alert(
+            "リセット信号を送信できませんでした。\n" +
+            error.message
+        );
+    }
+}
+</script>
+
+</body>
+</html>
+
+/* テンキーからメインメニューへ戻る */
+function backToMainMenu(){
+
+    inputValue = "";
+    currentMode = "";
+
+    updateDisplay();
+
+    document.getElementById("keypadPage")
+        .style.display = "none";
+
+    const sportsPage =
+        document.getElementById("sportsPage");
+
+    const clockPage =
+        document.getElementById("clockPage");
+
+    if(sportsPage){
+        sportsPage.style.display = "none";
+    }
+
+    if(clockPage){
+        clockPage.style.display = "none";
+    }
+
+    document.getElementById("modePage")
+        .style.display = "block";
+}
 </script>
 
 </body>
