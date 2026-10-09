@@ -1,13 +1,14 @@
-DOCTYPE html>
-<<!html lang="ja">
+<!DOCTYPE html>
+<html lang="ja">
 
 <head>
-<meta charset="UTF-8"> 
+<meta charset="UTF-8">
 
 <meta
     name="viewport"
     content="width=device-width, initial-scale=1, viewport-fit=cover"
->　　　　　　　　　　　　　　　　　　　
+>
+
 <title>BLE 接続画面</title>
 
 <style>
@@ -16,7 +17,7 @@ DOCTYPE html>
 *{
     box-sizing:border-box;
     -webkit-tap-highlight-color:transparent;
-}　　
+}
 
 html,
 body{
@@ -32,8 +33,9 @@ body{
         "Segoe UI",
         sans-serif;
 
-    max-width:430px;　
+    max-width:430px;
     margin:auto;
+
     padding:
         max(20px, env(safe-area-inset-top))
         20px
@@ -118,6 +120,26 @@ button:active{
     font-weight:bold;
 }
 
+
+/* メインモードの色 */
+.clock-main-button{
+    background:#1677ff;
+}
+
+.sensor-main-button{
+    background:#30a64a;
+}
+
+.sports-main-button{
+    background:#ff8a00;
+}
+
+.setting-main-button{
+    background:#777;
+}
+
+
+/* スポーツ用 */
 .change-button{
     background:#ff8a00;
 }
@@ -184,11 +206,18 @@ button:active{
 
 .confirm-button{
     grid-column:1 / span 3;
+    width:100%;
+    min-height:70px;
+    border:none;
+    border-radius:14px;
     color:white !important;
     background:#30a64a !important;
     font-size:25px !important;
+    font-weight:bold;
 }
 
+
+/* 戻るボタン */
 .back-button{
     width:100%;
     min-height:55px;
@@ -199,6 +228,12 @@ button:active{
     background:transparent;
     font-size:18px;
     font-weight:bold;
+}
+
+.main-menu-button{
+    color:white;
+    border:none;
+    background:#555;
 }
 
 
@@ -216,6 +251,193 @@ button:active{
 
 .message-error{
     color:#c00000;
+}
+
+
+/* 時計モード選択画面 */
+#clockPage{
+    display:none;
+}
+
+.clock-button{
+    background:#1677ff;
+}
+
+.stopwatch-button{
+    background:#ff8a00;
+}
+
+.timer-button{
+    background:#7b48c8;
+}
+
+
+/* ストップウォッチ操作画面 */
+#stopwatchPage{
+    display:none;
+}
+
+
+/* タイマー操作画面 */
+#timerPage{
+    display:none;
+}
+
+
+/* 環境センサ画面 */
+#sensorPage{
+    display:none;
+}
+
+
+/* スタート・ストップ */
+.start-stop-button{
+    width:100%;
+    min-height:85px;
+    margin-top:15px;
+    margin-bottom:15px;
+    border:none;
+    border-radius:16px;
+    color:white;
+    background:#30a64a;
+    font-size:25px;
+    font-weight:bold;
+}
+
+.start-stop-button.stopping{
+    background:#e24b4b;
+}
+
+
+/* リセット */
+.reset-button{
+    width:100%;
+    min-height:70px;
+    margin-bottom:15px;
+    border:none;
+    border-radius:16px;
+    color:white;
+    background:#777;
+    font-size:22px;
+    font-weight:bold;
+}
+
+
+/* 環境センサボタン */
+.temperature-button{
+    background:#e24b4b;
+}
+
+.humidity-button{
+    background:#1677ff;
+}
+
+.pressure-button{
+    background:#ff8a00;
+}
+
+.altitude-button{
+    background:#7b48c8;
+}
+
+
+/* タイマーの分・秒設定 */
+.timer-setting{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    margin:20px 0;
+}
+
+.time-control{
+    padding:12px;
+    border:2px solid #cfd5dc;
+    border-radius:16px;
+    background:white;
+    text-align:center;
+}
+
+.time-change-button{
+    width:100%;
+    min-height:55px;
+    border:none;
+    border-radius:13px;
+    color:white;
+    font-size:28px;
+    font-weight:bold;
+}
+
+.plus-button{
+    background:#1677ff;
+}
+
+.minus-button{
+    background:#e24b4b;
+}
+
+.time-value{
+    display:flex;
+    align-items:baseline;
+    justify-content:center;
+    min-height:75px;
+    padding:10px 0;
+}
+
+#timerMinutes,
+#timerSeconds{
+    font-size:40px;
+    font-weight:bold;
+}
+
+.time-unit{
+    margin-left:4px;
+    color:#555;
+    font-size:19px;
+    font-weight:bold;
+}
+
+.manual-input-button{
+    width:100%;
+    min-height:48px;
+    margin-top:10px;
+    border:none;
+    border-radius:12px;
+    color:white;
+    background:#777;
+    font-size:16px;
+    font-weight:bold;
+}
+
+
+/* タイマー用テンキー */
+#timerKeypadArea{
+    display:none;
+    margin:20px 0;
+    padding:15px;
+    border:2px solid #cfd5dc;
+    border-radius:16px;
+    background:#eef1f4;
+}
+
+#timerKeypadTitle{
+    margin-bottom:10px;
+    text-align:center;
+    font-size:20px;
+    font-weight:bold;
+}
+
+#timerManualDisplay{
+    width:100%;
+    min-height:70px;
+    margin-bottom:15px;
+    padding:10px 15px;
+    border:2px solid #cfd5dc;
+    border-radius:13px;
+    color:#111;
+    background:white;
+    text-align:right;
+    font-size:36px;
+    line-height:48px;
 }
 
 
@@ -247,129 +469,17 @@ button:active{
         min-height:60px;
         font-size:26px;
     }
+
+    .time-change-button{
+        min-height:48px;
+    }
+
+    #timerMinutes,
+    #timerSeconds{
+        font-size:34px;
+    }
 }
 
-
-	/* 時計モード選択画面 */
-#clockPage{
-    display:none;
-}
-
-.clock-button{
-    background:#1677ff;
-}
-
-.stopwatch-button{
-    background:#ff8a00;
-}
-
-.timer-button{
-    background:#7b48c8;
-}
-
-	/* ストップウォッチ操作画面 */
-#stopwatchPage{
-    display:none;
-}
-
-.start-stop-button{
-    width:100%;
-    min-height:85px;
-    margin-bottom:15px;
-    border:none;
-    border-radius:16px;
-    color:white;
-    background:#30a64a;
-    font-size:25px;
-    font-weight:bold;
-}
-
-.start-stop-button.stopping{
-    background:#e24b4b;
-}
-
-.reset-button{
-    width:100%;
-    min-height:70px;
-    margin-bottom:15px;
-    border:none;
-    border-radius:16px;
-    color:white;
-    background:#777;
-    font-size:22px;
-    font-weight:bold;
-}
-	/* 時計関係の画面 */
-#clockPage,
-#stopwatchPage,
-#timerPage{
-    display:none;
-}
-
-
-/* 時計モードに戻すボタン */
-.clock-mode-button{
-    width:100%;
-    min-height:70px;
-    margin-bottom:14px;
-    border:none;
-    border-radius:16px;
-    color:white;
-    background:#1677ff;
-    font-size:22px;
-    font-weight:bold;
-}
-
-
-/* スタート・ストップ */
-.start-stop-button{
-    width:10*%;
-    min-height:85px;
-    margin*top:15px;
-    margin-bottom:15px;
-*   border:none;
-   *border*radius*16px*
-    color:white;
-    background:#30a64a;
-    font-size:25px;
-    font-weight:bold;
-}
-
-.start-stop-button.stopping{
-    background:#e24b4b;
-}
-
-
-/* リセット */
-.reset-button{
-    width:1*0%;
-    min-height:70px;
-    margi*-bottom:15px;
-    border:none;
-   *border-radius:16px;
-    color:whit*;
-    background:#777;
-    font-size:22px;
-    font-weight:bold;
-}
-
-
-/* タイマーの数字表示 */
-#timerDisplay{
-    width:100%;
- *  min-height:88px;
-    margin:20px*0;
-    padding:15px 18px;
-    over*low:hidden;
-    border:2px solid #*fd5dc;
-    border-radius:15px;
-   *color:#111;
-    background:white;
-*   text-align:right;
-    font-size*44px;
-    line-height:56px;
-    wh*te-space:nowrap;
-}
 </style>
 </head>
 
@@ -393,45 +503,45 @@ button:active{
         未接続
     </div>
 
-<div id="modeButtons">
+    <div id="modeButtons">
 
-    <div class="mode-title">
-        メインモードを選択
+        <div class="mode-title">
+            メインモードを選択
+        </div>
+
+        <button
+            type="button"
+            class="mode-button clock-main-button"
+            onclick="openSubPage('clock')"
+        >
+            時計
+        </button>
+
+        <button
+            type="button"
+            class="mode-button sensor-main-button"
+            onclick="openSubPage('sensor')"
+        >
+            環境センサ
+        </button>
+
+        <button
+            type="button"
+            class="mode-button sports-main-button"
+            onclick="openSubPage('sports')"
+        >
+            スポーツ
+        </button>
+
+        <button
+            type="button"
+            class="mode-button setting-main-button"
+            onclick="openSubPage('setting')"
+        >
+            設定
+        </button>
+
     </div>
-
-    <button
-        type="button"
-        class="mode-button clock-main-button"
-        onclick="openSubPage('clock')"
-    >
-        時計
-    </button>
-
-    <button
-        type="button"
-        class="mode-button sensor-main-button"
-        onclick="openSubPage('sensor')"
-    >
-        環境センサ
-    </button>
-
-    <button
-        type="button"
-        class="mode-button sports-main-button"
-        onclick="openSubPage('sports')"
-    >
-        スポーツ
-    </button>
-
-    <button
-        type="button"
-        class="mode-button setting-main-button"
-        onclick="openSubPage('setting')"
-    >
-        設定
-    </button>
-
-</div>
 
 </section>
 
@@ -469,8 +579,13 @@ button:active{
             削除
         </button>
 
-        <button type="button" onclick="pressKey('0')">0</button>
-			0
+        <button
+            type="button"
+            onclick="pressKey('0')"
+        >
+            0
+        </button>
+
         <button
             type="button"
             class="buzzer-button"
@@ -489,232 +604,436 @@ button:active{
 
     </div>
 
-	
     <div id="message"></div>
 
-	<button
-		type = "button"
-		class = "back-button"
-		onclick = "backFormKeypad()"
-		>
-			前のページに戻る
-		</button>
+    <button
+        type="button"
+        class="back-button"
+        onclick="backFromKeypad()"
+    >
+        前のページに戻る
+    </button>
 
-	<button
-		type = "button"
-		class = "back-button main-menu-button"
-		onclick = "backToMainMenu()"
-		>
-			メインメニューに戻る
-		</button>
-		
-    <!--３ページ目:時計選択-->
-	<section id="clockPage">
-
-		<h1> 
-			時計モード	
-		</h1>
-
-		<div class="mode-title">
-			モードを選んでください
-	</div>
-
-		
-	<button 
-		type = "button"
-		class = "mode-button clock-button"
-		onclick = "selectClockMode('stopwatch')"
-		>
-		  ストップウォッチ
-		</button>
-
-	<button 
-		type = "button"
-		class = "mode-button clock-button"
-		onclick = "selectClockMode('timer')"
-		>
-		  タイマー
-		</button>
-
-		
-	<!--4ページ目:ストップウォッチ操作-->
-	<section id  = "stopwatchPage">
-
-			<h1>
-				ストップウォッチ
-			</h1>
-
-		<button
-			id = "startStopBtn"
-			type = "button"
-			class = "start-stop-button"
-			onclick = "toggleStopwatch()"
-			>
-			スタート
-			</button>
-		
-		<button
-			type = "button"
-			class = "reset-button"
-			oncklik = "resetStopWatch()"
-			>
-			　リセット
-			</button>
-
-		<button
-			type = "button"
-			class = "back-button"
-			onclick = "backToclockPage()"
-			>
-			前の画面に戻る
-			</button>
-		
-		<button
-			type = "button"
-			class = "back-button main-menu-button"
-			onclick = "backToMainMenuFromStopwatch()"
-			>
-			メインメニューへ戻る
-			</button>
-
-		<!--５ページ目：タイマー操作-->
-		<section id = " timerpage  ">
-			<h1>
-				タイマー
-			</h1>
-			<div id = "timerDisplay">
-				0
-			</div>	
-
-			<div class = "kyepad">
-				<button type = "button" onclick = "pressTimerKey('1')">1</button>
-				<button type = "button" onclick = "pressTimerKey('2')">2</button>
-				<button type = "button" onclick = "pressTimerKey('3')">3</button>
-				
-				<button type = "button" onclick = "pressTimerKey('4')">4</button>	
-				<button type = "button" onclick = "pressTimerKey('5')">5</button>
-				<button type = "button" onclick = "pressTimerKey('6')">6</button>
-				
-			    <button type = "button" onclick = "pressTimerKey('7')">7</button>
-			    <button type = "button" onclick = "pressTimerKey('8')">8</button>
-			    <button type = "button" onclick = "pressTimerKey('9')">9</button>
-				
-				
-
-				<button 
-					type = "button"
-					class = "delete-button"
-					onclick = "deleteTimerKye()"
-					>
-						削除
-					</button>
-
-				<button type = "button" onclick = "pressTimerKey('0')">
-					0
-				</button>
-
-				<button
-					type = "button"
-					class = "confirm-button"
-					onclick = "sendTimerValue()"
-					>
-					  時間設定
-					</button>
-			</div>
-
-				<button
-					type = "button"
-					class = "reset-button"
-					onclick = "resetTimer()"
-					>
-					リセットボタン
-					</button>
-
-				<button
-					type = "button"
-					class = "back-button"
-					onclick = "backToClockPageFromTimer()"
-					>
-					前の画面に戻る
-					</button>
-
-				<button
-					type= "button"
-					class="back-button main-menu-button"
-					onclick = "backToMainMenuFromTimer()"
-					>
-					メインメニューへ戻る
-					</button>
-			
-
-			<!--６ページ目:環境センサ-->
-			<section id = "sensorPage">
-				<h1>
-					環境センサ
-				</h1>
-
-				<div class = "mode-title">
-					表示する項目を選んでください
-				</div>
-
-				<button
-					type = "button"
-					class = "mode-button temperature-button"
-					onclick = "selectSensorMode('temperature')"
-					>
-					温度
-					</button>
-
-				<button
-					type = "button"
-				　　class = "mode-button humidity-button"
-					onclick = "selectSensorMode('humidity')"
-					>
-					湿度
-					</button>
-
-				<button
-					type = "button"
-					class = "mode-button pressure-button"
-					onclick = "selectSensorMode('pressure')"
-					>
-					気圧
-					</button>
-
-				<button
-					type = "button"
-					class = "mode-button altitude-button"
-					onclick = "selectSensorMode('altitude')"
-					>
-					高度
-					</button>
-
-				<button
-					type = "button"
-					class = "back-button main-menu-button"
-				    onclick="backToMainMenuFromSensor()"
-
-				
-	
-
+    <button
+        type="button"
+        class="back-button main-menu-button"
+        onclick="backToMainMenu()"
+    >
+        メインメニューに戻る
+    </button>
 
 </section>
 
 
+<!-- 3ページ目：時計選択 -->
+<section id="clockPage">
+
+    <h1>
+        時計モード
+    </h1>
+
+    <div class="mode-title">
+        モードを選んでください
+    </div>
+
+    <button
+        type="button"
+        class="mode-button clock-button"
+        onclick="sendClockMode()"
+    >
+        時計モード
+    </button>
+
+    <button
+        type="button"
+        class="mode-button stopwatch-button"
+        onclick="selectClockMode('stopwatch')"
+    >
+        ストップウォッチ
+    </button>
+
+    <button
+        type="button"
+        class="mode-button timer-button"
+        onclick="selectClockMode('timer')"
+    >
+        タイマー
+    </button>
+
+    <button
+        type="button"
+        class="back-button main-menu-button"
+        onclick="backToMainMenuFromClock()"
+    >
+        メインメニューへ戻る
+    </button>
+
+</section>
+
+
+<!-- 4ページ目：ストップウォッチ操作 -->
+<section id="stopwatchPage">
+
+    <h1>
+        ストップウォッチ
+    </h1>
+
+    <button
+        id="startStopBtn"
+        type="button"
+        class="start-stop-button"
+        onclick="toggleStopwatch()"
+    >
+        スタート
+    </button>
+
+    <button
+        type="button"
+        class="reset-button"
+        onclick="resetStopwatch()"
+    >
+        リセット
+    </button>
+
+    <button
+        type="button"
+        class="back-button"
+        onclick="backToClockPage()"
+    >
+        前の画面に戻る
+    </button>
+
+    <button
+        type="button"
+        class="back-button main-menu-button"
+        onclick="backToMainMenuFromStopwatch()"
+    >
+        メインメニューへ戻る
+    </button>
+
+</section>
+
+
+<!-- 5ページ目：タイマー操作 -->
+<section id="timerPage">
+
+    <h1>
+        タイマー
+    </h1>
+
+    <!-- 分・秒の選択 -->
+    <div class="timer-setting">
+
+        <!-- 分 -->
+        <div class="time-control">
+
+            <button
+                type="button"
+                class="time-change-button plus-button"
+                onclick="changeTimerMinutes(1)"
+            >
+                ＋
+            </button>
+
+            <div class="time-value">
+                <span id="timerMinutes">0</span>
+                <span class="time-unit">分</span>
+            </div>
+
+            <button
+                type="button"
+                class="time-change-button minus-button"
+                onclick="changeTimerMinutes(-1)"
+            >
+                －
+            </button>
+
+            <button
+                type="button"
+                class="manual-input-button"
+                onclick="openTimerKeypad('minutes')"
+            >
+                分を入力
+            </button>
+
+        </div>
+
+
+        <!-- 秒 -->
+        <div class="time-control">
+
+            <button
+                type="button"
+                class="time-change-button plus-button"
+                onclick="changeTimerSeconds(15)"
+            >
+                ＋
+            </button>
+
+            <div class="time-value">
+                <span id="timerSeconds">0</span>
+                <span class="time-unit">秒</span>
+            </div>
+
+            <button
+                type="button"
+                class="time-change-button minus-button"
+                onclick="changeTimerSeconds(-15)"
+            >
+                －
+            </button>
+
+            <button
+                type="button"
+                class="manual-input-button"
+                onclick="openTimerKeypad('seconds')"
+            >
+                秒を入力
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- 細かい時間を入力するテンキー -->
+    <div id="timerKeypadArea">
+
+        <div id="timerKeypadTitle">
+            数字を入力
+        </div>
+
+        <div id="timerManualDisplay">
+            0
+        </div>
+
+        <div class="keypad">
+
+            <button type="button" onclick="pressTimerManualKey('1')">
+                1
+            </button>
+
+            <button type="button" onclick="pressTimerManualKey('2')">
+                2
+            </button>
+
+            <button type="button" onclick="pressTimerManualKey('3')">
+                3
+            </button>
+
+            <button type="button" onclick="pressTimerManualKey('4')">
+                4
+            </button>
+
+            <button type="button" onclick="pressTimerManualKey('5')">
+                5
+            </button>
+
+            <button type="button" onclick="pressTimerManualKey('6')">
+                6
+            </button>
+
+            <button type="button" onclick="pressTimerManualKey('7')">
+                7
+            </button>
+
+            <button type="button" onclick="pressTimerManualKey('8')">
+                8
+            </button>
+
+            <button type="button" onclick="pressTimerManualKey('9')">
+                9
+            </button>
+
+            <button
+                type="button"
+                class="delete-button"
+                onclick="deleteTimerManualKey()"
+            >
+                削除
+            </button>
+
+            <button
+                type="button"
+                onclick="pressTimerManualKey('0')"
+            >
+                0
+            </button>
+
+            <button
+                type="button"
+                class="confirm-button"
+                onclick="confirmTimerManualInput()"
+            >
+                決定
+            </button>
+
+        </div>
+
+        <button
+            type="button"
+            class="back-button"
+            onclick="closeTimerKeypad()"
+        >
+            テンキーを閉じる
+        </button>
+
+    </div>
+
+
+    <button
+        type="button"
+        class="confirm-button"
+        onclick="sendTimerValue()"
+    >
+        時間設定
+    </button>
+
+    <button
+        id="timerStartStopBtn"
+        type="button"
+        class="start-stop-button"
+        onclick="toggleTimer()"
+    >
+        スタート
+    </button>
+
+    <button
+        type="button"
+        class="reset-button"
+        onclick="resetTimer()"
+    >
+        リセット
+    </button>
+
+    <button
+        type="button"
+        class="back-button"
+        onclick="backToClockPageFromTimer()"
+    >
+        前の画面に戻る
+    </button>
+
+    <button
+        type="button"
+        class="back-button main-menu-button"
+        onclick = "backToMainMenuFromTimer()"
+    >
+        メインメニューへ戻る
+    </button>
+
+</section>
+
+
+<!-- 6ページ目：環境センサ -->
+<section id = "sensorPage">
+
+    <h1>
+        環境センサ
+    </h1>
+
+    <div class = "mode-title">
+        表示する項目を選んでください
+    </div>
+
+    <button
+        type = "button"
+        class = "mode-button temperature-button"
+        onclick = "selectSensorMode('temperature')"
+    >
+        温度
+    </button>
+
+    <button
+        type = "button"
+        class = "mode-button humidity-button"
+        onclick = "selectSensorMode('humidity')"
+    >
+        湿度
+    </button>
+
+    <button
+        type = "button"
+        class = "mode-button pressure-button"
+        onclick = "selectSensorMode('pressure')"
+    >
+        気圧
+    </button>
+
+    <button
+        type = "button"
+        class = "mode-button altitude-button"
+        onclick = "selectSensorMode('altitude')"
+    >
+        高度
+    </button>
+
+    <button
+        type = "button"
+        class = "back-button main-menu-button"
+        onclick = "backToMainMenuFromSensor()"
+    >
+        メインメニューへ戻る
+    </button>
+
+</section>
+
+	<!-- ７ページ目：スポーツモード -->
+	<section id = "sportsPage">
+
+	<h1>
+		スポーツモード
+	</h1>
+
+	<div class = "mode-title">
+		表示する項目を選択してください
+	</div>
+
+		<button
+			type = "button"
+			class = "mode-button player-button"
+			onclick = "selectSportsMode(player)"
+			>
+			選手交代
+			</button>
+
+		<button
+			type = "button"
+			class = "mode-button player-button"
+			onclick = "selectSportsMode(score)"
+			>
+			得点
+			</button>
+			
+		
+	
+	
 <script>
 
 /*
 送信信号
 
-タイマー   : a
-選手交代   : b
-得点板     : c
-ブザー     : d
+時計系
+時計：A
+ストップウォッチ：B
+タイマー：C
 
+環境センサ
+温度：D
+気圧：E
+高度：F
+湿度：G
 
-確定ボタン:
-入力した数字をまとめて送信
+ストップウォッチ・タイマー
+スタート・ストップ：S
+リセット：R
+
+スポーツ
+選手交代：H
+得点板：I
+ブザー：M
 */
+
 
 let bleDevice = null;
 let gattServer = null;
@@ -722,6 +1041,21 @@ let writeCharacteristic = null;
 
 let inputValue = "";
 let currentMode = "";
+
+let stopwatchRunning = false;
+
+/* タイマーの分と秒 */
+let timerMinutes = 0;
+let timerSeconds = 0;
+
+/* タイマーが動作中か */
+let timerRunning = false;
+
+/* テンキーで入力中の数字 */
+let timerManualValue = "";
+
+/* minutesまたはseconds */
+let timerInputTarget = "";
 
 
 /* 状態表示 */
@@ -855,7 +1189,8 @@ async function connectBLE(){
         console.error(error);
 
         setStatus(
-            "接続失敗：" + error.message,
+            "接続失敗：" +
+            error.message,
             "error"
         );
     }
@@ -871,9 +1206,32 @@ function onDisconnected(){
     inputValue = "";
     currentMode = "";
 
+    timerMinutes = 0;
+    timerSeconds = 0;
+    timerManualValue = "";
+    timerInputTarget = "";
+    timerRunning = false;
+    stopwatchRunning = false;
+
     updateDisplay();
+    updateTimerDisplay();
 
     document.getElementById("keypadPage")
+        .style.display = "none";
+
+    document.getElementById("clockPage")
+        .style.display = "none";
+
+    document.getElementById("stopwatchPage")
+        .style.display = "none";
+
+    document.getElementById("timerPage")
+        .style.display = "none";
+
+    document.getElementById("sensorPage")
+        .style.display = "none";
+
+    document.getElementById("timerKeypadArea")
         .style.display = "none";
 
     document.getElementById("modePage")
@@ -910,18 +1268,17 @@ async function sendBLE(text){
         new TextEncoder().encode(text);
 
     if(
-        writeCharacteristic.properties
-            .writeWithoutResponse &&
-        typeof writeCharacteristic
-            .writeValueWithoutResponse === "function"
+        writeCharacteristic.properties.writeWithoutResponse &&
+        typeof writeCharacteristic.writeValueWithoutResponse
+            === "function"
     ){
 
         await writeCharacteristic
             .writeValueWithoutResponse(data);
 
     }else if(
-        typeof writeCharacteristic
-            .writeValueWithResponse === "function"
+        typeof writeCharacteristic.writeValueWithResponse
+            === "function"
     ){
 
         await writeCharacteristic
@@ -935,55 +1292,77 @@ async function sendBLE(text){
 }
 
 
-/* モード選択 */
-async function selectMode(mode){
+/* メインメニューから各ページを開く */
+function openSubPage(page){
 
-    let signal = "";
-    let modeTitle = "";
-
-    if(mode === "timer"){
-
-        signal = "a";
-        modeTitle = "タイマー";
-
-    }else if(mode === "change"){
-
-        signal = "b";
-        modeTitle = "選手交代";
-
-    }else if(mode === "score"){
-
-        signal = "c";
-        modeTitle = "得点板";
-
-    }else{
-
-        return;
-    }
-
-    try{
-
-        await sendBLE(signal);
-
-        currentMode = mode;
-        inputValue = "";
-
-        updateDisplay();
-
-        document.getElementById("modeName")
-            .textContent = modeTitle;
+    if(page === "clock"){
 
         document.getElementById("modePage")
             .style.display = "none";
 
-        document.getElementById("keypadPage")
+        document.getElementById("clockPage")
             .style.display = "block";
 
-        showMessage(
-            "モード信号「" +
-            signal +
-            "」を送信しました"
+    }else if(page === "sensor"){
+
+        document.getElementById("modePage")
+            .style.display = "none";
+
+        document.getElementById("sensorPage")
+            .style.display = "block";
+
+    }else if(page === "sports"){
+
+        alert(
+            "スポーツ画面はこれから作成します"
         );
+
+    }else if(page === "setting"){
+
+        alert(
+            "設定画面はこれから作成します"
+        );
+    }
+}
+
+
+/* 時計関係のモード選択 */
+async function selectClockMode(mode){
+
+    try{
+
+        if(mode === "stopwatch"){
+
+            await sendBLE("B");
+
+            document.getElementById("clockPage")
+                .style.display = "none";
+
+            document.getElementById("stopwatchPage")
+                .style.display = "block";
+
+        }else if(mode === "timer"){
+
+            await sendBLE("C");
+
+            timerMinutes = 0;
+            timerSeconds = 0;
+            timerManualValue = "";
+            timerInputTarget = "";
+            timerRunning = false;
+
+            updateTimerDisplay();
+            resetTimerButtonDisplay();
+
+            document.getElementById("timerKeypadArea")
+                .style.display = "none";
+
+            document.getElementById("clockPage")
+                .style.display = "none";
+
+            document.getElementById("timerPage")
+                .style.display = "block";
+        }
 
     }catch(error){
 
@@ -995,208 +1374,36 @@ async function selectMode(mode){
 }
 
 
-/* 数字を入力 */
-function pressKey(key){
-
-    if(inputValue.length >= 8){
-
-        showMessage(
-            "入力できるのは8桁までです",
-            true
-        );
-
-        return;
-    }
-
-    inputValue += key;
-
-    updateDisplay();
-}
-
-
-/* 1文字削除 */
-function deleteKey(){
-
-    inputValue =
-        inputValue.slice(0, -1);
-
-    updateDisplay();
-}
-
-
-/* 入力した数字を送信 */
-async function confirmInput(){
-
-    if(inputValue.length === 0){
-
-        showMessage(
-            "数字を入力してください",
-            true
-        );
-
-        return;
-    }
+/* 時計モード信号 */
+async function sendClockMode(){
 
     try{
 
-        const sentValue = inputValue;
+        await sendBLE("A");
 
-        await sendBLE(sentValue);
-
-        showMessage(
-            "「" +
-            sentValue +
-            "」を送信しました"
-        );
-
-        inputValue = "";
-
-        updateDisplay();
-
-    }catch(error){
-
-        showMessage(
-            "送信失敗：" + error.message,
-            true
-        );
-    }
-}
-
-
-/* ブザー信号dを送信 */
-async function sendBuzzer(){
-
-    try{
-
-        await sendBLE("d");
-
-        showMessage(
-            "ブザー信号「d」を送信しました"
-        );
-
-    }catch(error){
-
-        showMessage(
-            "ブザー信号の送信失敗：" +
-            error.message,
-            true
-        );
-    }
-}
-
-
-/* モード選択画面へ戻る */
-function backToModePage(){
-
-    inputValue = "";
-    currentMode = "";
-
-    updateDisplay();
-
-    document.getElementById("keypadPage")
-        .style.display = "none";
-
-    document.getElementById("modePage")
-        .style.display = "block";
-}
-function backToModePage(){
-
-    inputValue = "";
-    currentMode = "";
-
-    updateDisplay();
-
-    document.getElementById("keypadPage")
-        .style.display = "none";
-
-    document.getElementById("modePage")
-        .style.display = "block";
-}
-
-
-
-    let signal = "";
-    let modeTitle = "";
-
-    if(mode === "color"){
-
-        signal = "e";
-        modeTitle = "カラー選択";
-
-    }else if(mode === "clock"){
-
-        signal = "f";
-        modeTitle = "時計";
-
-    }else if(mode === "stopwatch"){
-
-        signal = "g";
-        modeTitle = "ストップウォッチ";
-
-    }else if(mode === "temp"){
-
-        signal = "h";
-        modeTitle = "温度";
-
-    }else{
-
-        return;
-    }
-
-    try{
-
-        await sendBLE(signal);
-
-        showMessage(
-            modeTitle + "の信号「" +
-            signal + "」を送信しました"
+        alert(
+            "時計モード信号「A」を送信しました"
         );
 
     }catch(error){
 
         alert(
-            modeTitle +
-            "の信号を送信できませんでした。\n" +
+            "時計モード信号を送信できませんでした。\n" +
             error.message
         );
     }
-
-/* テンキーを開く */
-function openKeypad(mode, modeTitle){
-
-    currentMode = mode;
-    inputValue = "";
-
-    updateDisplay();
-
-    document.getElementById("modeName")
-        .textContent = modeTitle;
-
-    document.getElementById("modePage")
-        .style.display = "none";
-
-    document.getElementById("sportsPage")
-        .style.display = "none";
-
-    document.getElementById("clockPage")
-        .style.display = "none";
-
-    document.getElementById("keypadPage")
-        .style.display = "block";
 }
 
-/* ストップウォッチが動作中か */
-let stopwatchRunning = false;
 
-
-/* スタート・ストップを切り替える */
+/* ストップウォッチのスタート・ストップ */
 async function toggleStopwatch(){
 
     try{
 
         await sendBLE("S");
 
-        stopwatchRunning = !stopwatchRunning;
+        stopwatchRunning =
+            !stopwatchRunning;
 
         const button =
             document.getElementById("startStopBtn");
@@ -1245,10 +1452,484 @@ async function resetStopwatch(){
         );
     }
 }
-</script>
 
-</body>
-</html>
+
+/* 分・秒の表示を更新 */
+function updateTimerDisplay(){
+
+    document.getElementById("timerMinutes")
+        .textContent = timerMinutes;
+
+    document.getElementById("timerSeconds")
+        .textContent = timerSeconds;
+}
+
+/* 分を1分ずつ変更して信号を送る */
+async function changeTimerMinutes(amount){
+
+    try{
+
+        if(amount > 0){
+
+            /* 分を1増やす信号 */
+            await sendBLE("T");
+
+            if(timerMinutes < 999){
+                timerMinutes += 1;
+            }
+
+        }else{
+
+            /* 0分の場合は減らさない */
+            if(timerMinutes === 0){
+                return;
+            }
+
+            /* 分を1減らす信号 */
+            await sendBLE("J");
+
+            timerMinutes -= 1;
+        }
+
+        updateTimerDisplay();
+
+    }catch(error){
+
+        alert(
+            "分の変更信号を送信できませんでした。\n" +
+            error.message
+        );
+    }
+}
+
+
+/* 秒を15秒ずつ変更して信号を送る */
+async function changeTimerSeconds(amount){
+
+    try{
+
+        if(amount > 0){
+
+            /* 秒を15増やす信号 */
+            await sendBLE("W");
+
+            timerSeconds += 15;
+
+            /* 60秒になったら1分進める */
+            if(timerSeconds >= 60){
+
+                timerSeconds -= 60;
+
+                if(timerMinutes < 999){
+                    timerMinutes += 1;
+                }
+            }
+
+        }else{
+
+            /* 0分0秒の場合は減らさない */
+            if(
+                timerMinutes === 0 &&
+                timerSeconds === 0
+            ){
+                return;
+            }
+
+            /* 秒を15減らす信号。xは小文字 */
+            await sendBLE("x");
+
+            timerSeconds -= 15;
+
+            /* 0秒より小さくなった場合 */
+            if(timerSeconds < 0){
+
+                if(timerMinutes > 0){
+
+                    timerMinutes -= 1;
+                    timerSeconds += 60;
+
+                }else{
+
+                    timerSeconds = 0;
+                }
+            }
+        }
+
+        updateTimerDisplay();
+
+    }catch(error){
+
+        alert(
+            "秒の変更信号を送信できませんでした。\n" +
+            error.message
+        );
+    }
+}
+
+
+/* タイマー用テンキーを閉じる */
+function closeTimerKeypad(){
+
+    timerManualValue = "";
+    timerInputTarget = "";
+
+    document.getElementById("timerKeypadArea")
+        .style.display = "none";
+}
+
+
+/* テンキー入力中の数字を表示 */
+function updateTimerManualDisplay(){
+
+    document.getElementById("timerManualDisplay")
+        .textContent = timerManualValue || "0";
+}
+
+
+/* テンキーで数字を入力 */
+function pressTimerManualKey(key){
+
+    if(timerManualValue.length >= 3){
+
+        alert(
+            "入力できるのは3桁までです"
+        );
+
+        return;
+    }
+
+    timerManualValue += key;
+
+    updateTimerManualDisplay();
+}
+
+
+/* テンキーの数字を1文字削除 */
+function deleteTimerManualKey(){
+
+    timerManualValue =
+        timerManualValue.slice(0, -1);
+
+    updateTimerManualDisplay();
+}
+
+
+/* テンキーで入力した値を決定 */
+function confirmTimerManualInput(){
+
+    if(timerManualValue.length === 0){
+
+        alert(
+            "数字を入力してください"
+        );
+
+        return;
+    }
+
+    const value =
+        Number(timerManualValue);
+
+    if(timerInputTarget === "minutes"){
+
+        timerMinutes = value;
+
+    }else if(timerInputTarget === "seconds"){
+
+        /*
+        75秒なら1分15秒に変換
+        */
+        timerMinutes +=
+            Math.floor(value / 60);
+
+        timerSeconds =
+            value % 60;
+
+        if(timerMinutes > 999){
+            timerMinutes = 999;
+        }
+    }
+
+    updateTimerDisplay();
+    closeTimerKeypad();
+}
+
+
+/* 設定した時間を送信 */
+async function sendTimerValue(){
+
+    if(
+        timerMinutes === 0 &&
+        timerSeconds === 0
+    ){
+
+        alert(
+            "時間を設定してください"
+        );
+
+        return;
+    }
+
+    try{
+
+        /*
+        合計秒数で送信
+        例：5分30秒なら330を送信
+        */
+        const totalSeconds =
+            timerMinutes * 60 +
+            timerSeconds;
+
+        await sendBLE(
+            String(totalSeconds)
+        );
+
+        alert(
+            timerMinutes +
+            "分" +
+            timerSeconds +
+            "秒を設定しました"
+        );
+
+    }catch(error){
+
+        alert(
+            "時間を送信できませんでした。\n" +
+            error.message
+        );
+    }
+}
+
+
+/* タイマーのスタート・ストップ */
+async function toggleTimer(){
+
+    try{
+
+        await sendBLE("S");
+
+        timerRunning =
+            !timerRunning;
+
+        const button =
+            document.getElementById("timerStartStopBtn");
+
+        if(timerRunning){
+
+            button.textContent = "ストップ";
+            button.classList.add("stopping");
+
+        }else{
+
+            button.textContent = "スタート";
+            button.classList.remove("stopping");
+        }
+
+    }catch(error){
+
+        alert(
+            "スタート・ストップ信号を送信できませんでした。\n" +
+            error.message
+        );
+    }
+}
+
+
+/* タイマーをリセット */
+async function resetTimer(){
+
+    try{
+
+        await sendBLE("R");
+
+        timerMinutes = 0;
+        timerSeconds = 0;
+        timerManualValue = "";
+        timerInputTarget = "";
+        timerRunning = false;
+
+        updateTimerDisplay();
+        resetTimerButtonDisplay();
+        closeTimerKeypad();
+
+    }catch(error){
+
+        alert(
+            "リセット信号を送信できませんでした。\n" +
+            error.message
+        );
+    }
+}
+
+
+/* タイマーボタンをスタート表示に戻す */
+function resetTimerButtonDisplay(){
+
+    const button =
+        document.getElementById("timerStartStopBtn");
+
+    button.textContent = "スタート";
+    button.classList.remove("stopping");
+}
+
+
+/* 環境センサ信号 */
+async function selectSensorMode(mode){
+
+    let signal = "";
+    let modeTitle = "";
+
+    if(mode === "temperature"){
+
+        signal = "D";
+        modeTitle = "温度";
+
+    }else if(mode === "humidity"){
+
+        signal = "G";
+        modeTitle = "湿度";
+
+    }else if(mode === "pressure"){
+
+        signal = "E";
+        modeTitle = "気圧";
+
+    }else if(mode === "altitude"){
+
+        signal = "F";
+        modeTitle = "高度";
+
+    }else{
+
+        return;
+    }
+
+    try{
+
+        await sendBLE(signal);
+
+        alert(
+            modeTitle +
+            "信号「" +
+            signal +
+            "」を送信しました"
+        );
+
+    }catch(error){
+
+        alert(
+            modeTitle +
+            "信号を送信できませんでした。\n" +
+            error.message
+        );
+    }
+}
+
+
+/* 通常テンキーの数字入力 */
+function pressKey(key){
+
+    if(inputValue.length >= 8){
+
+        showMessage(
+            "入力できるのは8桁までです",
+            true
+        );
+
+        return;
+    }
+
+    inputValue += key;
+
+    updateDisplay();
+}
+
+
+/* 通常テンキーの数字を削除 */
+function deleteKey(){
+
+    inputValue =
+        inputValue.slice(0, -1);
+
+    updateDisplay();
+}
+
+
+/* 通常テンキーの数字を送信 */
+async function confirmInput(){
+
+    if(inputValue.length === 0){
+
+        showMessage(
+            "数字を入力してください",
+            true
+        );
+
+        return;
+    }
+
+    try{
+
+        const sentValue =
+            inputValue;
+
+        await sendBLE(sentValue);
+
+        showMessage(
+            "「" +
+            sentValue +
+            "」を送信しました"
+        );
+
+        inputValue = "";
+
+        updateDisplay();
+
+    }catch(error){
+
+        showMessage(
+            "送信失敗：" +
+            error.message,
+            true
+        );
+    }
+}
+
+
+/* ブザー信号 */
+async function sendBuzzer(){
+
+    try{
+
+        await sendBLE("M");
+
+        showMessage(
+            "ブザー信号「M」を送信しました"
+        );
+
+    }catch(error){
+
+        showMessage(
+            "ブザー信号の送信失敗：" +
+            error.message,
+            true
+        );
+    }
+}
+
+
+/* テンキーから前のページへ戻る */
+function backFromKeypad(){
+
+    inputValue = "";
+    updateDisplay();
+
+    document.getElementById("keypadPage")
+        .style.display = "none";
+
+    document.getElementById("modePage")
+        .style.display = "block";
+}
+
 
 /* テンキーからメインメニューへ戻る */
 function backToMainMenu(){
@@ -1261,60 +1942,80 @@ function backToMainMenu(){
     document.getElementById("keypadPage")
         .style.display = "none";
 
-    const sportsPage =
-        document.getElementById("sportsPage");
+    document.getElementById("modePage")
+        .style.display = "block";
+}
 
-    const clockPage =
-        document.getElementById("clockPage");
 
-    if(sportsPage){
-        sportsPage.style.display = "none";
-    }
+/* ストップウォッチから時計選択へ戻る */
+function backToClockPage(){
 
-    if(clockPage){
-        clockPage.style.display = "none";
-    }
+    document.getElementById("stopwatchPage")
+        .style.display = "none";
+
+    document.getElementById("clockPage")
+        .style.display = "block";
+}
+
+
+/* タイマーから時計選択へ戻る */
+function backToClockPageFromTimer(){
+
+    closeTimerKeypad();
+
+    document.getElementById("timerPage")
+        .style.display = "none";
+
+    document.getElementById("clockPage")
+        .style.display = "block";
+}
+
+
+/* 時計画面からメインメニューへ戻る */
+function backToMainMenuFromClock(){
+
+    document.getElementById("clockPage")
+        .style.display = "none";
 
     document.getElementById("modePage")
         .style.display = "block";
 }
-		/* 時計関係のモードを選択 */
-async function selectClockMode(mode){
 
-    try{
 
-        if(mode === "stopwatch"){
+/* ストップウォッチからメインメニューへ戻る */
+function backToMainMenuFromStopwatch(){
 
-            await sendBLE("B");
+    document.getElementById("stopwatchPage")
+        .style.display = "none";
 
-            document.getElementById("clockPage")
-                .style.display = "none";
-
-            document.getElementById("stopwatchPage")
-                .style.display = "block";
-
-        }else if(mode === "timer"){
-
-            await sendBLE("C");
-
-            timerInputValue = "";
-            updateTimerDisplay();
-
-            document.getElementById("clockPage")
-                .style.display = "none";
-
-            document.getElementById("timerPage")
-                .style.display = "block";
-        }
-
-    }catch(error){
-
-        alert(
-            "モード信号を送信できませんでした。\n" +
-            error.message
-        );
-    }
+    document.getElementById("modePage")
+        .style.display = "block";
 }
+
+
+/* タイマーからメインメニューへ戻る */
+function backToMainMenuFromTimer(){
+
+    closeTimerKeypad();
+
+    document.getElementById("timerPage")
+        .style.display = "none";
+
+    document.getElementById("modePage")
+        .style.display = "block";
+}
+
+
+/* 環境センサからメインメニューへ戻る */
+function backToMainMenuFromSensor(){
+
+    document.getElementById("sensorPage")
+        .style.display = "none";
+
+    document.getElementById("modePage")
+        .style.display = "block";
+}
+
 </script>
 
 </body>
