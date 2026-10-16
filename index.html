@@ -480,6 +480,40 @@ button:active{
     }
 }
 
+	/* スポーツモード画面 */
+#sportsPage{
+    display:none;
+}
+
+.player-button{
+    background:#ff8a00;
+}
+
+.score-button{
+    background:#7b48c8;
+}
+
+
+/* 設定画面 */
+#settingPage{
+    display:none;
+}
+
+.color-button{
+    background:#1677ff;
+}
+
+.brightness-button{
+    background:#f1a000;
+}
+
+.setting-buzzer-button{
+    background:#30a64a;
+}
+
+.restore-button{
+    background:#e24b4b;
+}
 </style>
 </head>
 
@@ -491,7 +525,7 @@ button:active{
 
 
 	<!--接続前-->
-	<div id = connectionArea">
+	<div id = "connectionArea">
 
     <h1>
 		BLE 操作パネル
@@ -508,6 +542,9 @@ button:active{
     <div id="status">
         未接続
     </div>
+		
+</div>
+	
 
 	<!-- 接続後-->
     <div id="modeButtons">
@@ -984,9 +1021,8 @@ button:active{
     </button>
 
 </section>
-
-	する項目を選択してください
-	</div>
+	
+	
 
 	<!-- ７ページ目：スポーツモード -->
 	<section id = "sportsPage">
@@ -994,8 +1030,12 @@ button:active{
 	<h1>
 		スポーツモード
 	</h1>
-
+		
 	<div class = "mode-title">
+		表示する項目を選択してください
+	</div>
+
+
 		<button
 			type = "button"
 			class = "mode-button player-button"
@@ -1397,7 +1437,7 @@ async function connectBLE(){
         document.getElementById("modeButtons")
             .style.display = "block";
 		
-		document.getElementById("connectionArea")
+	
 
     }catch(error){
 
@@ -1455,7 +1495,7 @@ function onDisconnected(){
     document.getElementById("modeButtons")
         .style.display = "none";
 
-    document.getElementById("connectBtn")
+    document.getElementById("connectionArea")
         .style.display = "block";
 
     setStatus(
@@ -1528,15 +1568,20 @@ function openSubPage(page){
 
     }else if(page === "sports"){
 
-        alert(
-            "スポーツ画面はこれから作成します"
-        );
+		document.getElementById("modePage")
+			.style.display = "none";
 
+		document.getElementById("sportsPage")
+			.style.display = "block";
+		
     }else if(page === "setting"){
 
-        alert(
-            "設定画面はこれから作成します"
-        );
+		document.getElementById("modePage")
+			.style.display = "none"
+
+		document.getElementById("settingPage")
+			.style.display = "block"
+		
     }
 }
 
@@ -2231,40 +2276,18 @@ function backToMainMenuFromSensor(){
         .style.display = "block";
 }
 
-/* スポーツモード画面 */
-#sportsPage{
-    display:none;
-}
+/* スポーツ画面からメインメニューに戻る*/
+function backToMainMenuFromSports(){
 
-.player-button{
-    background:#ff8a00;
-}
+	document.getElementById("sportsPage")
+		.style.display = "none";
 
-.score-button{
-    background:#7b48c8;
+	document.getElementById("modePage")
+		.style.display = "block";
 }
 
 
-/* 設定画面 */
-#settingPage{
-    display:none;
-}
-
-.color-button{
-    background:#1677ff;
-}
-
-.brightness-button{
-    background:#f1a000;
-}
-
-.setting-buzzer-button{
-    background:#30a64a;
-}
-
-.restore-button{
-    background:#e24b4b;
-}
+	
 	/* テスト画面からリセット信号Rを送信 */
 async function resetTestInput(){
 
