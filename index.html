@@ -978,6 +978,9 @@ button:active{
 
 </section>
 
+	する項目を選択してください
+	</div>
+
 	<!-- ７ページ目：スポーツモード -->
 	<section id = "sportsPage">
 
@@ -986,28 +989,25 @@ button:active{
 	</h1>
 
 	<div class = "mode-title">
-		表示する項目を選択してください
-	</div>
-
 		<button
 			type = "button"
 			class = "mode-button player-button"
-			onclick = "selectSportsMode(player)"
+			onclick = "selectSportsMode('player')"
 			>
 			選手交代
 			</button>
 
 		<button
 			type = "button"
-			class = "mode-button player-button"
-			onclick = "selectSportsMode(score)"
+			class = "mode-button score-button"
+			onclick = "selectSportsMode('score')"
 			>
 			得点
 			</button>
 
 		<button
 			type = "button"
-			class = "back-button main-menu-buton"
+			class = "back-button main-menu-button"
 			onclick = "backToMainMenuFromSports()"
 			>
 			メインメニューへ戻る
@@ -1044,7 +1044,7 @@ button:active{
 
 			<button
 				type = "button"
-				class = "mode-button buzzer-button"
+				class = "mode-button setting-buzzer-button"
 				onclick = "selectBuzzerMode()"
 				>
 				ブザーのオン・オフ設定
@@ -1053,7 +1053,7 @@ button:active{
 			<button
 				type = "button"
 				class = "mode-button restore-button"
-				onclick = "selectRestoreMode"
+				onclick = "selectRestoreMode()"
 				>
 				ボード初期化
 				</button>
@@ -1066,7 +1066,105 @@ button:active{
 				メインメニューに戻る
 				</button>
 
+			
+
 		</section>
+
+		<--! ９ページ目：色設定ページ -->
+		<section id = "colorsettingPage">
+
+			<h1>
+				カラー変更
+			</h1>
+
+			<div class = "mode-title">
+				変更したい色を選んでください
+			</div>
+
+			<button
+				type = "button"
+				class = "mode-button red-button"
+				onclick = "selectRedMode()"
+				>
+				
+				</button>
+		</section>
+
+
+
+
+			
+		<!-- 9ページ目：テンキーテスト -->
+		<section id="testPage">
+
+    	<h1>
+        	通信テスト
+    	</h1>
+
+    	<div class="mode-title">
+        	送信する数字を入力してください
+    	</div>
+
+    <div id="testDisplay">
+        0
+    </div>
+
+    <div class="keypad">
+
+        <button type="button" onclick="pressTestKey('1')">1</button>
+        <button type="button" onclick="pressTestKey('2')">2</button>
+        <button type="button" onclick="pressTestKey('3')">3</button>
+
+        <button type="button" onclick="pressTestKey('4')">4</button>
+        <button type="button" onclick="pressTestKey('5')">5</button>
+        <button type="button" onclick="pressTestKey('6')">6</button>
+
+        <button type="button" onclick="pressTestKey('7')">7</button>
+        <button type="button" onclick="pressTestKey('8')">8</button>
+        <button type="button" onclick="pressTestKey('9')">9</button>
+
+        <button
+            type="button"
+            class="delete-button"
+            onclick="deleteTestKey()"
+        >
+            削除
+        </button>
+
+        <button type="button" onclick="pressTestKey('0')">
+            0
+        </button>
+
+        <button
+            type="button"
+            class="confirm-button"
+            onclick="sendTestValue()"
+        >
+            送信
+        </button>
+
+    </div>
+
+    <div id="testMessage"></div>
+
+    <button
+        type="button"
+        class="back-button"
+        onclick="backToSettingFromTest()"
+    >
+        設定画面へ戻る
+    </button>
+
+    <button
+        type="button"
+        class="back-button main-menu-button"
+        onclick="backToMainMenuFromTest()"
+    >
+        メインメニューへ戻る
+    </button>
+
+</section>
+				
 	
 				
 
@@ -2079,6 +2177,64 @@ function backToMainMenuFromSensor(){
         .style.display = "block";
 }
 
+/* スポーツモード画面 */
+#sportsPage{
+    display:none;
+}
+
+.player-button{
+    background:#ff8a00;
+}
+
+.score-button{
+    background:#7b48c8;
+}
+
+
+/* 設定画面 */
+#settingPage{
+    display:none;
+}
+
+.color-button{
+    background:#1677ff;
+}
+
+.brightness-button{
+    background:#f1a000;
+}
+
+.setting-buzzer-button{
+    background:#30a64a;
+}
+
+.restore-button{
+    background:#e24b4b;
+}
+	/* テスト画面からリセット信号Rを送信 */
+async function resetTestInput(){
+
+    try{
+
+        await sendBLE("R");
+
+        testInputValue = "";
+
+        updateTestDisplay();
+
+        showTestMessage(
+            "リセット信号「R」を送信しました"
+        );
+
+    }catch(error){
+
+        showTestMessage(
+            "リセット信号を送信できませんでした：" +
+            error.message,
+            true
+        );
+    }
+}
 </script>
 
 </body>
