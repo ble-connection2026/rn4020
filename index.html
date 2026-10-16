@@ -489,7 +489,13 @@ button:active{
 <!-- 1ページ目：接続とモード選択 -->
 <section id="modePage">
 
-    <h1>BLE 操作パネル</h1>
+
+	<!--接続前-->
+	<div id = connectionArea">
+
+    <h1>
+		BLE 操作パネル
+	</h1>
 
     <button
         id="connectBtn"
@@ -503,6 +509,7 @@ button:active{
         未接続
     </div>
 
+	<!-- 接続後-->
     <div id="modeButtons">
 
         <div class="mode-title">
@@ -1029,7 +1036,7 @@ button:active{
 			<button
 				type = "button"
 				class = "mode-button color-button"
-				onclick = "serectColorMode()"
+				onclick = "serectColorMode('color')"
 				>
 				カラー設定
 				</button>
@@ -1037,7 +1044,7 @@ button:active{
 			<button
 				type = "button"
 				class = "mode-button brightness-button"
-				onclick = "selectBrightnessMode()"
+				onclick = "selectBrightnessMode('brightness')"
 				>
 				明るさ設定
 				</button>
@@ -1045,7 +1052,7 @@ button:active{
 			<button
 				type = "button"
 				class = "mode-button setting-buzzer-button"
-				onclick = "selectBuzzerMode()"
+				onclick = "selectBuzzerMode('buzzer')"
 				>
 				ブザーのオン・オフ設定
 				</button>
@@ -1053,7 +1060,7 @@ button:active{
 			<button
 				type = "button"
 				class = "mode-button restore-button"
-				onclick = "selectRestoreMode()"
+				onclick = "selectRestoreMode('board')"
 				>
 				ボード初期化
 				</button>
@@ -1083,18 +1090,63 @@ button:active{
 
 			<button
 				type = "button"
-				class = "mode-button red-button"
-				onclick = "selectRedMode()"
+				class = "mode-button white-button"
+				onclick = "selectWhiteMode('white')"
 				>
-				
+				白
 				</button>
+
+			<button
+				type = "button"
+				class = "mode-button pink-button"
+				onclick = "selectPinkMode('pink')"
+				>
+				ピンク
+				</button>
+
+			<button
+				type = "button"
+				class = "mode-button Red-button"
+				onclick = "selectRedMode('red)"
+				>
+				赤
+				</button>
+
+			<button
+				type = "button"
+				class = "mode-button orange-button"
+				onclick = "selectOrangeMode()"
+				>
+				オレンジ
+				</button>
+
+			<button
+				type = "button"
+				class = "mode-button yellow-button"
+				onclick = "selectYellowMode()"
+				>
+				黄色
+				</button>
+
+			<button
+				type = "button"
+				class = "mode-button green-button"
+				onclick = "selectGreenMode()"
+				>
+				緑色
+				</button>
+
+			<button
+				type = "button"
+				class = "mode-button "
+			
 		</section>
 
 
 
 
 			
-		<!-- 9ページ目：テンキーテスト -->
+		<!-- 99ページ目：フリーモード -->
 		<section id="testPage">
 
     	<h1>
