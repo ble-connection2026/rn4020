@@ -1391,11 +1391,13 @@ async function connectBLE(){
             "connected"
         );
 
-        document.getElementById("connectBtn")
+        document.getElementById("connectionArea")
             .style.display = "none";
 
         document.getElementById("modeButtons")
             .style.display = "block";
+		
+		document.getElementById("connectionArea")
 
     }catch(error){
 
