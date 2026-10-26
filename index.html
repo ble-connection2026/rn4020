@@ -514,6 +514,13 @@ button:active{
 .restore-button{
     background:#e24b4b;
 }
+	
+/*色設定ページ*/
+#colorsettingPage{
+	display:none;
+}
+	
+	
 </style>
 </head>
 
@@ -1059,8 +1066,12 @@ button:active{
 			>
 			メインメニューへ戻る
 			</button>
-		
+	
 			</section>
+
+
+
+	
 
 		<!-- 8ページ目：設定 -->
 		<section id = "settingPage">
@@ -1076,7 +1087,7 @@ button:active{
 			<button
 				type = "button"
 				class = "mode-button color-button"
-				onclick = "serectColorMode('color')"
+				onclick = "selectColorMode('color')"
 				>
 				カラー設定
 				</button>
@@ -1108,7 +1119,7 @@ button:active{
 			<button
 				type = "button"
 				class = "back-button main-menu-button"
-				onclick = "backToMainManuFromSetting()"
+				onclick = "backToMainMenuFromSetting()"
 				>
 				メインメニューに戻る
 				</button>
@@ -1117,7 +1128,7 @@ button:active{
 
 		</section>
 
-		<--! ９ページ目：色設定ページ -->
+		<!-- ９ページ目：色設定ページ -->
 		<section id = "colorsettingPage">
 
 			<h1>
@@ -1179,6 +1190,35 @@ button:active{
 			<button
 				type = "button"
 				class = "mode-button "
+				onclick = "selectLighttBlue()"
+				>
+				水色
+				</button>
+			
+			<button
+				type = "button"
+				class = "mode-button"
+				onclick = "selectBlue()"
+				>
+				青色
+				</button>
+
+			<button
+				type = "button"
+				class = "mode-button"
+				onclick = "selectPurple()"
+				>
+				紫色
+				</button>
+
+			<button
+				type = "button"
+				class = "back-button main-menu-button"
+				onclick = "backToMainMenuFromColorsetting()"
+				>
+				メインメニューに戻る
+				</button>
+
 			
 		</section>
 
@@ -2285,6 +2325,30 @@ function backToMainMenuFromSports(){
 	document.getElementById("modePage")
 		.style.display = "block";
 }
+
+/* 設定画面からメインメニューに戻る */
+function backToMainMenuFromSetting(){
+
+	document.getElementById("settingPage")
+		.style.display = "none";
+	
+	document.getElementById("modePage")
+		.style.display = "block";
+
+}
+
+/* 色設定からメインメニューに戻る */
+function backToMainMenuFromColorsetting(){
+
+	document.getElementById("colorsettingPage")
+		.style.display = "none";
+
+	document.getElementById("modePage")
+		.style.display = "block";
+
+}
+	
+	
 
 
 	
