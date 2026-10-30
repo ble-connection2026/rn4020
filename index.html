@@ -1377,6 +1377,9 @@ let timerManualValue = "";
 /* minutesまたはseconds */
 let timerInputTarget = "";
 
+/*フリーモードを開く*/
+let testInpactValue = "";
+
 
 /* 状態表示 */
 function setStatus(text, type = ""){
@@ -2403,6 +2406,22 @@ function backToMainMenuFromColorsetting(){
         );
     }
 }
+
+/* フリーモードを開く　*/
+function selectFreeMode(){
+
+	testInpactValue = "";
+	updateTestDisplay();
+
+	document.getElementById("settingPage")
+		.style.display = "none";
+	document.getElementById("freePage")
+		.style.disuplay = "block";
+}
+
+
+
+	
 </script>
 
 </body>
