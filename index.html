@@ -1252,7 +1252,7 @@ button:active{
 
 
 			
-		<!-- 99ページ目：フリーモード -->
+		<!-- 10ページ目：フリーモード -->
 		<section id="freePage">
 
     	<h1>
@@ -2416,11 +2416,16 @@ function selectFreeMode(){
 	document.getElementById("settingPage")
 		.style.display = "none";
 	document.getElementById("freePage")
-		.style.disuplay = "block";
+		.style.display = "block";
 }
 
-
-
+/* フリーモードからメインメニューに戻る*/
+function backToMainMenuFromTest(){
+	document.getElementById("freePage")
+		.style.display = "none";
+	document.getElementById("modePage")
+		.style.display = "block";
+}
 	
 </script>
 
