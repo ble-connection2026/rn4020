@@ -522,11 +522,11 @@ button:active{
 	
 
 /*フリーモード*/
-	#testPage{
+	#freePage{
 		display:none;
 	}
 
-#freeDisplay{
+#testDisplay{
 	width:100%;
 	min-height:88px;
 	margin:20px 0;
@@ -535,14 +535,10 @@ button:active{
 	border-radius:15px;
 	background:white;
 	text-align:right;
-	font-saize:44px;
+	font-size:44px;
 	line-height:56px;
 }
-	
-	
-	
-	
-	
+		
 </style>
 </head>
 
@@ -1141,8 +1137,11 @@ button:active{
 			<button
 				type = "button"
 				class = "mode-button free-button"
-				onclick = "selectFreeMode('free')"
-
+				onclick = "selectFreeMode()"
+				>
+					フリーモード
+			    </button>
+			
 			<button
 				type = "button"
 				class = "back-button main-menu-button"
@@ -1304,7 +1303,8 @@ button:active{
 
     </div>
 
-    <div id="testMessage"></div>
+    <div id="testMessage">
+	</div>
 
     <button
         type="button"
@@ -2380,7 +2380,7 @@ function backToMainMenuFromColorsetting(){
 
 	
 	/* テスト画面からリセット信号Rを送信 */
-async function resetTestInput(){
+	async function resetTestInput(){
 
     try{
 
