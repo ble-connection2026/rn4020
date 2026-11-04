@@ -1378,7 +1378,7 @@ let timerManualValue = "";
 let timerInputTarget = "";
 
 /*フリーモードを開く*/
-let testInpactValue = "";
+let testInputValue = "";
 
 
 /* 状態表示 */
@@ -2410,7 +2410,7 @@ function backToMainMenuFromColorsetting(){
 /* フリーモードを開く　*/
 function selectFreeMode(){
 
-	testInpactValue = "";
+	testInputValue = "";
 	updateTestDisplay();
 
 	document.getElementById("settingPage")
@@ -2419,13 +2419,59 @@ function selectFreeMode(){
 		.style.display = "block";
 }
 
-/* フリーモードからメインメニューに戻る*/
+/* フリーモードの数字表示を更新 */
+function updateTestDisplay(){
+
+	document.getElementById("testDisplay")
+		.textContent = testInputValue || "0";
+}
+
+/* フリーモードで数字を入力 */
+function pressTestKey(key){
+
+	if(testInputValue.length >= 4){
+		showTestMessage(
+			"４桁まで入力できます",
+		true	
+	);
+
+	return;
+}
+
+	testInputValue += key;
+
+	updateTestDisplay();
+
+}
+
+/* フリーモード内の削除処理 */
+function deleteKey(){
+
+	testInputValue = testInputValue.slice(0, -1);
+	updateTestDisplay();
+	
+}
+		
+/* フリーモードから設定に戻る */
+	function backToSettingFromTest(){
+	testInputValue = "";
+	updateTestDisplay();
+
+	document.getElementById("freePage")
+		.style.display = "none";
+	document.getElementById("settingPage")
+		.style.display = "block";
+
+}
+		
+/* フリーモードからメインメニューに戻る */
 function backToMainMenuFromTest(){
 	document.getElementById("freePage")
 		.style.display = "none";
 	document.getElementById("modePage")
 		.style.display = "block";
 }
+	
 	
 </script>
 
