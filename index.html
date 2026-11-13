@@ -1437,7 +1437,7 @@ function updateDisplay(){
 /* RN4020へ接続 */
 async function connectBLE(){
 
-    alert("接続ボタンが押されました");
+   
 
     try{
 
@@ -1632,7 +1632,9 @@ async function sendBLE(text){
 
 
 /* メインメニューから各ページを開く */
-function openSubPage(page){
+async function openSubPage(page){
+
+	await sendBLE("Z");
 
     if(page === "clock"){
 
@@ -1677,7 +1679,7 @@ async function selectClockMode(mode){
 
         if(mode === "stopwatch"){
 
-            await sendBLE("ZB");
+            await sendBLE("B");
 
             document.getElementById("clockPage")
                 .style.display = "none";
@@ -1723,7 +1725,7 @@ async function sendClockMode(){
 
     try{
 
-        await sendBLE("ZA");
+        await sendBLE("A");
 
         alert(
             "時計モード信号「A」を送信しました"
@@ -1744,7 +1746,7 @@ async function toggleStopwatch(){
 
     try{
 
-        await sendBLE("ZS");
+        await sendBLE("S");
 
         stopwatchRunning =
             !stopwatchRunning;
@@ -1778,7 +1780,7 @@ async function resetStopwatch(){
 
     try{
 
-        await sendBLE("ZR");
+        await sendBLE("R");
 
         stopwatchRunning = false;
 
@@ -2124,22 +2126,22 @@ async function selectSensorMode(mode){
 
     if(mode === "temperature"){
 
-        signal = "ZD";
+        signal = "D";
         modeTitle = "温度";
 
     }else if(mode === "humidity"){
 
-        signal = "ZG";
+        signal = "G";
         modeTitle = "湿度";
 
     }else if(mode === "pressure"){
 
-        signal = "ZE";
+        signal = "E";
         modeTitle = "気圧";
 
     }else if(mode === "altitude"){
 
-        signal = "ZF";
+        signal = "F";
         modeTitle = "高度";
 
     }else{
