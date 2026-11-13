@@ -1352,6 +1352,15 @@ button:active{
 選手交代：H
 得点板：I
 ブザー：M
+
+フリーモード:J
+
+設定
+色設定:K
+明るさ変更:L
+ボードー初期化:N
+
+モード変更:Z
 */
 
 
@@ -1663,7 +1672,7 @@ async function selectClockMode(mode){
 
         if(mode === "stopwatch"){
 
-            await sendBLE("B");
+            await sendBLE("ZB");
 
             document.getElementById("clockPage")
                 .style.display = "none";
@@ -2445,7 +2454,7 @@ function pressTestKey(key){
 }
 
 /* フリーモード内の削除処理 */
-function deleteKey(){
+function deleTestKey(){
 
 	testInputValue = testInputValue.slice(0, -1);
 	updateTestDisplay();
