@@ -1185,7 +1185,7 @@ button:active{
 			<button
 				type = "button"
 				class = "mode-button Red-button"
-				onclick = "selectRedMode('red)"
+				onclick = "selectRedMode('red')"
 				>
 				赤
 				</button>
@@ -1437,6 +1437,8 @@ function updateDisplay(){
 /* RN4020へ接続 */
 async function connectBLE(){
 
+    alert("接続ボタンが押されました");
+
     try{
 
         if(!navigator.bluetooth){
@@ -1450,11 +1452,13 @@ async function connectBLE(){
             "RN4020を選択してください",
             ""
         );
-
-        bleDevice =
-            await navigator.bluetooth.requestDevice({
-                acceptAllDevices:true
-            });
+		
+	bleDevice =
+    await navigator.bluetooth.requestDevice({
+        filters: [
+            { name: "RN4020" }
+        ]
+    });
 
         setStatus(
             "接続中...",
@@ -2383,7 +2387,7 @@ function backToMainMenuFromColorsetting(){
 	document.getElementById("colorsettingPage")
 		.style.display = "none";
 
-	document.getElementById("modePage")
+	document.getElementById("settingPage")
 		.style.display = "block";
 
 }
@@ -2455,7 +2459,7 @@ function pressTestKey(key){
 }
 
 /* フリーモード内の削除処理 */
-function deleTestKey(){
+function deleteTestKey(){
 
 	testInputValue = testInputValue.slice(0, -1);
 	updateTestDisplay();
@@ -2482,13 +2486,7 @@ function backToMainMenuFromTest(){
 		.style.display = "block";
 }
 
-<button
-    type="button"
-    class="confirm-button"
-    onclick="sendTestValue()"
->
-    送信
-</button>
+ 
 
 /* フリーモードで入力した数字を送信 */
 async function sendTestValue(){
