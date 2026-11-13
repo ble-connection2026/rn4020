@@ -539,53 +539,6 @@ button:active{
 	line-height:56px;
 }
 
-/* フリーモードで入力した数字を送信 */
-async function sendTestValue(){
-
-    if(testInputValue.length === 0){
-
-        showTestMessage(
-            "数字を入力してください",
-            true
-        );
-
-        return;
-    }
-
-    try{
-
-        const sentValue = testInputValue;
-
-        await sendBLE(sentValue);
-
-        showTestMessage(
-            "「" + sentValue + "」を送信しました"
-        );
-
-        testInputValue = "";
-
-        updateTestDisplay();
-
-    }catch(error){
-
-        showTestMessage(
-            "送信失敗：" + error.message,
-            true
-        );
-    }
-}
-
-/* フリーモードのメッセージ表示 */
-function showTestMessage(text, isError = false){
-
-    const message =
-        document.getElementById("testMessage");
-
-    message.textContent = text;
-
-    message.style.color =
-        isError ? "#c00000" : "#168534";
-}
 		
 </style>
 </head>
@@ -2536,6 +2489,55 @@ function backToMainMenuFromTest(){
 >
     送信
 </button>
+
+/* フリーモードで入力した数字を送信 */
+async function sendTestValue(){
+
+    if(testInputValue.length === 0){
+
+        showTestMessage(
+            "数字を入力してください",
+            true
+        );
+
+        return;
+    }
+
+    try{
+
+        const sentValue = testInputValue;
+
+        await sendBLE("ZJ" + sentValue);
+
+        showTestMessage(
+            "「" + sentValue + "」を送信しました"
+        );
+
+        testInputValue = "";
+
+        updateTestDisplay();
+
+    }catch(error){
+
+        showTestMessage(
+            "送信失敗：" + error.message,
+            true
+        );
+    }
+}
+
+
+/* フリーモードのメッセージ表示 */
+function showTestMessage(text, isError = false){
+
+    const message =
+        document.getElementById("testMessage");
+
+    message.textContent = text;
+
+    message.style.color =
+        isError ? "#c00000" : "#168534";
+}
 	
 	
 </script>
