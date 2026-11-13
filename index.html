@@ -538,6 +538,54 @@ button:active{
 	font-size:44px;
 	line-height:56px;
 }
+
+/* フリーモードで入力した数字を送信 */
+async function sendTestValue(){
+
+    if(testInputValue.length === 0){
+
+        showTestMessage(
+            "数字を入力してください",
+            true
+        );
+
+        return;
+    }
+
+    try{
+
+        const sentValue = testInputValue;
+
+        await sendBLE(sentValue);
+
+        showTestMessage(
+            "「" + sentValue + "」を送信しました"
+        );
+
+        testInputValue = "";
+
+        updateTestDisplay();
+
+    }catch(error){
+
+        showTestMessage(
+            "送信失敗：" + error.message,
+            true
+        );
+    }
+}
+
+/* フリーモードのメッセージ表示 */
+function showTestMessage(text, isError = false){
+
+    const message =
+        document.getElementById("testMessage");
+
+    message.textContent = text;
+
+    message.style.color =
+        isError ? "#c00000" : "#168534";
+}
 		
 </style>
 </head>
@@ -1718,7 +1766,7 @@ async function sendClockMode(){
 
     try{
 
-        await sendBLE("A");
+        await sendBLE("ZA");
 
         alert(
             "時計モード信号「A」を送信しました"
@@ -1739,7 +1787,7 @@ async function toggleStopwatch(){
 
     try{
 
-        await sendBLE("S");
+        await sendBLE("ZS");
 
         stopwatchRunning =
             !stopwatchRunning;
@@ -1773,7 +1821,7 @@ async function resetStopwatch(){
 
     try{
 
-        await sendBLE("R");
+        await sendBLE("ZR");
 
         stopwatchRunning = false;
 
@@ -1811,7 +1859,7 @@ async function changeTimerMinutes(amount){
         if(amount > 0){
 
             /* 分を1増やす信号 */
-            await sendBLE("T");
+            await sendBLE("ZT");
 
             if(timerMinutes < 999){
                 timerMinutes += 1;
@@ -1825,7 +1873,7 @@ async function changeTimerMinutes(amount){
             }
 
             /* 分を1減らす信号 */
-            await sendBLE("J");
+            await sendBLE("ZJ");
 
             timerMinutes -= 1;
         }
@@ -2119,22 +2167,22 @@ async function selectSensorMode(mode){
 
     if(mode === "temperature"){
 
-        signal = "D";
+        signal = "ZD";
         modeTitle = "温度";
 
     }else if(mode === "humidity"){
 
-        signal = "G";
+        signal = "ZG";
         modeTitle = "湿度";
 
     }else if(mode === "pressure"){
 
-        signal = "E";
+        signal = "ZE";
         modeTitle = "気圧";
 
     }else if(mode === "altitude"){
 
-        signal = "F";
+        signal = "ZF";
         modeTitle = "高度";
 
     }else{
@@ -2239,7 +2287,7 @@ async function sendBuzzer(){
 
     try{
 
-        await sendBLE("M");
+        await sendBLE("ZM");
 
         showMessage(
             "ブザー信号「M」を送信しました"
@@ -2480,6 +2528,14 @@ function backToMainMenuFromTest(){
 	document.getElementById("modePage")
 		.style.display = "block";
 }
+
+<button
+    type="button"
+    class="confirm-button"
+    onclick="sendTestValue()"
+>
+    送信
+</button>
 	
 	
 </script>
