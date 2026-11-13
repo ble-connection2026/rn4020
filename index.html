@@ -539,6 +539,72 @@ button:active{
 	line-height:56px;
 }
 
+	
+/* 得点画面 */
+#scorePage{
+    display:none;
+}
+
+.score-area{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin:20px 0;
+}
+
+.team-box{
+    padding:12px;
+    border-radius:15px;
+    text-align:center;
+    color:white;
+}
+
+.my-team{
+    background:#1677ff;
+}
+
+.opponent-team{
+    background:#e24b4b;
+}
+
+.team-name{
+    font-size:20px;
+    font-weight:bold;
+}
+
+.score-display{
+    margin:15px 0;
+    font-size:55px;
+    font-weight:bold;
+}
+
+.score-control{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+}
+
+.score-control button{
+    min-height:60px;
+    border:none;
+    border-radius:12px;
+    background:white;
+    font-size:25px;
+    font-weight:bold;
+}
+
+.court-change-button{
+    width:100%;
+    min-height:70px;
+    margin-top:15px;
+    border:none;
+    border-radius:15px;
+    background:#777;
+    color:white;
+    font-size:23px;
+    font-weight:bold;
+}
+
 		
 </style>
 </head>
@@ -1090,9 +1156,81 @@ button:active{
 
 
 
-	
+		<!--８ページ目：選手交代-->
 
-		<!-- 8ページ目：設定 -->
+		<!--９ページ目：得点-->
+		
+<!-- ９ページ目：得点 -->
+<section id="scorePage">
+
+    <h1>得点</h1>
+
+    <div class="score-area">
+
+        <!-- 左：自チーム -->
+        <div class="team-box my-team">
+
+            <div id="leftScore" class="score-display">
+                0
+            </div>
+
+            <div class="score-control">
+
+                <button onclick="changeLeftScore(1)">
+                    +1
+                </button>
+
+                <button onclick="changeLeftScore(-1)">
+                    -1
+                </button>
+
+            </div>
+        </div>
+
+        <!-- 右：相手チーム -->
+        <div class="team-box opponent-team">
+
+            <div id="rightScore" class="score-display">
+                0
+            </div>
+
+            <div class="score-control">
+
+                <button onclick="changeRightScore(1)">
+                    +1
+                </button>
+
+                <button onclick="changeRightScore(-1)">
+                    -1
+                </button>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- コートチェンジ -->
+    <button
+        class="court-change-button"
+        onclick="changeCourt()">
+        コートチェンジ
+    </button>
+
+    <button
+        class="back-button"
+        onclick="backToSportsFromScore()">
+        スポーツ画面へ戻る
+    </button>
+
+    <button
+        class="back-button main-menu-button"
+        onclick="backToMainMenuFromScore()">
+        メインメニューに戻る
+    </button>
+
+</section>
+
+		<!-- ページ目：設定 -->
 		<section id = "settingPage">
 
 		<h1>
@@ -1155,7 +1293,8 @@ button:active{
 
 		</section>
 
-		<!-- ９ページ目：色設定ページ -->
+
+		<!-- ページ目：色設定ページ -->
 		<section id = "colorsettingPage">
 
 			<h1>
@@ -1253,7 +1392,7 @@ button:active{
 
 
 			
-		<!-- 10ページ目：フリーモード -->
+		<!-- ページ目：フリーモード -->
 		<section id="freePage">
 
     	<h1>
@@ -1587,6 +1726,8 @@ function onDisconnected(){
         "error"
     );
 }
+
+
 
 
 /* BLEデータ送信 */
@@ -2171,6 +2312,159 @@ async function selectSensorMode(mode){
 }
 
 
+
+/* 得点モード */
+
+let leftScore = 0;
+let rightScore = 0;
+
+
+/* 得点表示を更新 */
+function updateScoreDisplay(){
+
+    document.getElementById("leftScore")
+        .textContent = leftScore;
+
+    document.getElementById("rightScore")
+        .textContent = rightScore;
+}
+
+
+/* 左チームの得点変更 */
+async function changeLeftScore(amount){
+
+    try{
+
+        if(amount === 1){
+
+            await sendBLE("T");
+            leftScore++;
+
+        }else{
+
+            if(leftScore === 0) return;
+
+            await sendBLE("J");
+            leftScore--;
+        }
+
+        updateScoreDisplay();
+
+    }catch(error){
+
+        alert(
+            "左チームの得点信号を送信できませんでした\n"
+            + error.message
+        );
+    }
+}
+
+
+/* 右チームの得点変更 */
+async function changeRightScore(amount){
+
+    try{
+
+        if(amount === 1){
+
+            await sendBLE("W");
+            rightScore++;
+
+        }else{
+
+            if(rightScore === 0) return;
+
+            await sendBLE("X");
+            rightScore--;
+        }
+
+        updateScoreDisplay();
+
+    }catch(error){
+
+        alert(
+            "右チームの得点信号を送信できませんでした\n"
+            + error.message
+        );
+    }
+}
+
+
+/* コートチェンジ */
+async function changeCourt(){
+
+    try{
+
+        await sendBLE("O");
+
+    }catch(error){
+
+        alert(
+            "コートチェンジ信号を送信できませんでした\n"
+            + error.message
+        );
+    }
+}
+
+
+/* 得点画面からスポーツ画面へ戻る */
+function backToSportsFromScore(){
+
+    document.getElementById("scorePage")
+        .style.display = "none";
+
+    document.getElementById("sportsPage")
+        .style.display = "block";
+}
+
+
+/* 得点画面からメインメニューへ戻る */
+function backToMainMenuFromScore(){
+
+    document.getElementById("scorePage")
+        .style.display = "none";
+
+    document.getElementById("modePage")
+        .style.display = "block";
+}
+/* スポーツモード選択 */
+async function selectSportsMode(mode){
+
+    try{
+
+        if(mode === "score"){
+
+            // 得点モード信号「I」を送信
+            await sendBLE("I");
+
+            // 得点を初期化
+            leftScore = 0;
+            rightScore = 0;
+
+            // 得点表示を更新
+            updateScoreDisplay();
+
+            // スポーツ画面を閉じる
+            document.getElementById("sportsPage")
+                .style.display = "none";
+
+            // 得点画面を表示
+            document.getElementById("scorePage")
+                .style.display = "block";
+        }
+
+    }catch(error){
+
+        alert(
+            "得点モードの信号を送信できませんでした\n"
+            + error.message
+        );
+    }
+}
+
+
+
+
 /* 通常テンキーの数字入力 */
 function pressKey(key){
 
@@ -2246,7 +2540,7 @@ async function sendBuzzer(){
 
     try{
 
-        await sendBLE("ZM");
+        await sendBLE("M");
 
         showMessage(
             "ブザー信号「M」を送信しました"
@@ -2264,7 +2558,7 @@ async function sendBuzzer(){
 
 
 /* テンキーから前のページへ戻る */
-function backFromKeypad(){
+	function backFromKeypad(){
 
     inputValue = "";
     updateDisplay();
@@ -2278,8 +2572,9 @@ function backFromKeypad(){
 
 
 /* テンキーからメインメニューへ戻る */
-function backToMainMenu(){
+	function backToMainMenu(){
 
+	
     inputValue = "";
     currentMode = "";
 
@@ -2294,7 +2589,7 @@ function backToMainMenu(){
 
 
 /* ストップウォッチから時計選択へ戻る */
-function backToClockPage(){
+	function backToClockPage(){
 
     document.getElementById("stopwatchPage")
         .style.display = "none";
@@ -2305,7 +2600,7 @@ function backToClockPage(){
 
 
 /* タイマーから時計選択へ戻る */
-function backToClockPageFromTimer(){
+	function backToClockPageFromTimer(){
 
     closeTimerKeypad();
 
@@ -2318,7 +2613,7 @@ function backToClockPageFromTimer(){
 
 
 /* 時計画面からメインメニューへ戻る */
-function backToMainMenuFromClock(){
+	function backToMainMenuFromClock(){
 
     document.getElementById("clockPage")
         .style.display = "none";
@@ -2329,7 +2624,9 @@ function backToMainMenuFromClock(){
 
 
 /* ストップウォッチからメインメニューへ戻る */
-function backToMainMenuFromStopwatch(){
+	function backToMainMenuFromStopwatch(){
+
+	
 
     document.getElementById("stopwatchPage")
         .style.display = "none";
@@ -2340,7 +2637,7 @@ function backToMainMenuFromStopwatch(){
 
 
 /* タイマーからメインメニューへ戻る */
-function backToMainMenuFromTimer(){
+	function backToMainMenuFromTimer(){
 
     closeTimerKeypad();
 
@@ -2353,7 +2650,7 @@ function backToMainMenuFromTimer(){
 
 
 /* 環境センサからメインメニューへ戻る */
-function backToMainMenuFromSensor(){
+	function backToMainMenuFromSensor(){
 
     document.getElementById("sensorPage")
         .style.display = "none";
@@ -2363,7 +2660,7 @@ function backToMainMenuFromSensor(){
 }
 
 /* スポーツ画面からメインメニューに戻る*/
-function backToMainMenuFromSports(){
+	function backToMainMenuFromSports(){
 
 	document.getElementById("sportsPage")
 		.style.display = "none";
@@ -2373,7 +2670,7 @@ function backToMainMenuFromSports(){
 }
 
 /* 設定画面からメインメニューに戻る */
-function backToMainMenuFromSetting(){
+	function backToMainMenuFromSetting(){
 
 	document.getElementById("settingPage")
 		.style.display = "none";
@@ -2384,8 +2681,9 @@ function backToMainMenuFromSetting(){
 }
 
 /* 色設定からメインメニューに戻る */
-function backToMainMenuFromColorsetting(){
+ function backToSettingFromColorsetting(){
 
+	
 	document.getElementById("colorsettingPage")
 		.style.display = "none";
 
@@ -2393,9 +2691,6 @@ function backToMainMenuFromColorsetting(){
 		.style.display = "block";
 
 }
-	
-	
-
 
 	
 	/* テスト画面からリセット信号Rを送信 */
@@ -2424,7 +2719,9 @@ function backToMainMenuFromColorsetting(){
 }
 
 /* フリーモードを開く　*/
-function selectFreeMode(){
+async function selectFreeMode(){
+
+	await sendBLE("Z");
 
 	testInputValue = "";
 	updateTestDisplay();
@@ -2470,6 +2767,7 @@ function deleteTestKey(){
 		
 /* フリーモードから設定に戻る */
 	function backToSettingFromTest(){
+	
 	testInputValue = "";
 	updateTestDisplay();
 
@@ -2481,7 +2779,8 @@ function deleteTestKey(){
 }
 		
 /* フリーモードからメインメニューに戻る */
-function backToMainMenuFromTest(){
+	function backToMainMenuFromTest(){
+	
 	document.getElementById("freePage")
 		.style.display = "none";
 	document.getElementById("modePage")
