@@ -519,6 +519,47 @@ button:active{
 #colorsettingPage{
 	display:none;
 }
+
+/* 9色のカラー設定 */
+
+.white-button{
+    background:#ffffff;
+    color:#111;
+    border:2px solid #777;
+}
+
+.pink-button{
+    background:#ff69b4;
+}
+
+.red-button{
+    background:#e60000;
+}
+
+.orange-button{
+    background:#ff8a00;
+}
+
+.yellow-button{
+    background:#ffd700;
+    color:#111;
+}
+
+.green-button{
+    background:#30a64a;
+}
+
+.lightblue-button{
+    background:#00bfff;
+}
+
+.blue-button{
+    background:#1677ff;
+}
+
+.purple-button{
+    background:#8000cc;
+}
 	
 
 /*フリーモード*/
@@ -1323,7 +1364,7 @@ button:active{
 
 			<button
 				type = "button"
-				class = "mode-button Red-button"
+				class = "mode-button red-button"
 				onclick = "selectRedMode('red')"
 				>
 				赤
@@ -1332,7 +1373,7 @@ button:active{
 			<button
 				type = "button"
 				class = "mode-button orange-button"
-				onclick = "selectOrangeMode()"
+				onclick = "selectOrangeMode('orange')"
 				>
 				オレンジ
 				</button>
@@ -1340,7 +1381,7 @@ button:active{
 			<button
 				type = "button"
 				class = "mode-button yellow-button"
-				onclick = "selectYellowMode()"
+				onclick = "selectYellowMode('yellow')"
 				>
 				黄色
 				</button>
@@ -1348,34 +1389,44 @@ button:active{
 			<button
 				type = "button"
 				class = "mode-button green-button"
-				onclick = "selectGreenMode()"
+				onclick = "selectGreenMode('green')"
 				>
 				緑色
 				</button>
 
 			<button
 				type = "button"
-				class = "mode-button "
-				onclick = "selectLighttBlue()"
+				class = "mode-button lightblue-button"
+				onclick = "selectLightBlue('lightblue')"
 				>
 				水色
 				</button>
 			
 			<button
 				type = "button"
-				class = "mode-button"
-				onclick = "selectBlue()"
+				class = "mode-button blue-button"
+				onclick = "selectBlue('blue')"
 				>
 				青色
 				</button>
 
 			<button
 				type = "button"
-				class = "mode-button"
-				onclick = "selectPurple()"
+				class = "mode-button purple-button"
+				onclick = "selectPurple('purple')"
 				>
 				紫色
 				</button>
+
+			
+			<button
+				type = "button"
+				class = "back-button"
+				onclick = "backToSettingFromColorsetting()"
+				>
+				設定画面に戻る	
+				</button>
+
 
 			<button
 				type = "button"
@@ -1385,7 +1436,7 @@ button:active{
 				メインメニューに戻る
 				</button>
 
-			
+
 		</section>
 
 
@@ -2680,7 +2731,7 @@ async function sendBuzzer(){
 
 }
 
-/* 色設定からメインメニューに戻る */
+/* 色設定から設定画面に戻る */
  function backToSettingFromColorsetting(){
 
 	
@@ -2691,6 +2742,28 @@ async function sendBuzzer(){
 		.style.display = "block";
 
 }
+
+/*色設定からメインメニューに戻る*/
+function backToMainMenuFromColorsetting(){
+
+    document.getElementById("colorsettingPage")
+        .style.display = "none";
+
+    document.getElementById("modePage")
+        .style.display = "block";
+}
+
+/* カラー設定画面を開く */
+function selectColorMode(){
+
+    document.getElementById("settingPage")
+        .style.display = "none";
+
+    document.getElementById("colorsettingPage")
+        .style.display = "block";
+}
+
+	
 
 	
 	/* テスト画面からリセット信号Rを送信 */
