@@ -1731,7 +1731,7 @@ function onDisconnected(){
 
     writeCharacteristic = null;
     gattServer = null;
-
+	
     inputValue = "";
     currentMode = "";
 
@@ -1741,6 +1741,7 @@ function onDisconnected(){
     timerInputTarget = "";
     timerRunning = false;
     stopwatchRunning = false;
+	testInputValue = "";
 
     updateDisplay();
     updateTimerDisplay();
@@ -1760,6 +1761,9 @@ function onDisconnected(){
     document.getElementById("sensorPage")
         .style.display = "none";
 
+	document.getElementById("sportPage")
+		.style.display = "none";
+
     document.getElementById("timerKeypadArea")
         .style.display = "none";
 
@@ -1771,6 +1775,9 @@ function onDisconnected(){
 
     document.getElementById("connectionArea")
         .style.display = "block";
+
+	document.getElementById("freePage")
+		.style.display = "none";
 
     setStatus(
         "接続が切れました。もう一度接続してください。",
@@ -2833,7 +2840,9 @@ function pressTestKey(key){
 /* フリーモード内の削除処理 */
 function deleteTestKey(){
 
-	testInputValue = testInputValue.slice(0, -1);
+	testInputValue = 
+		testInputValue.slice(0, -1);
+	
 	updateTestDisplay();
 	
 }
@@ -2879,7 +2888,7 @@ async function sendTestValue(){
 
         const sentValue = testInputValue;
 
-        await sendBLE("ZJ" + sentValue);
+        await sendBLE(sentValue);
 
         showTestMessage(
             "「" + sentValue + "」を送信しました"
